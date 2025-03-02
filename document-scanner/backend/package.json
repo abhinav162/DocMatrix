@@ -10,7 +10,8 @@
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "lint": "eslint . --ext .ts",
     "db:init": "ts-node src/db/init.ts",
-    "db:reset": "ts-node -e \"require('./src/db/schema').resetDatabase().then(() => process.exit(0)).catch(err => { console.error(err); process.exit(1); })\""
+    "db:reset": "ts-node -e \"require('./src/db/schema').resetDatabase().then(() => process.exit(0)).catch(err => { console.error(err); process.exit(1); })\"",
+    "fs:init": "ts-node src/utils/initFileSystem.ts"
   },
   "dependencies": {
     "@types/helmet": "^4.0.0",
