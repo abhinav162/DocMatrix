@@ -168,6 +168,27 @@ class CreditRequestDAO implements BaseDAO<CreditRequest, CreditRequestCreationPa
   }
 
   /**
+   * Find approved credit requests of a user for the current day
+   * @returns Array of approved credit requests
+   */
+  async findApprovedForUser(userId: number): Promise<CreditRequest[] | null> {
+    try {
+      const db = await DBConnection.getConnection();
+      const requests = await db.all<CreditRequest[]>(
+        'SELECT * FROM credit_requests WHERE user_id = ? AND status = "approved" AND date(timestamp) = date("now")',
+        userId
+      );
+      if (requests.length > 1) {
+        throw new Error('Multiple approved requests found for the same user');
+      }
+      return requests || null;
+    } catch (error) {
+      console.error('Error finding approved credit request for user:', error);
+      throw error;
+    }
+  }
+    
+  /**
    * Count today's credit requests for a user
    * @param userId User ID
    * @returns Number of credit requests made today

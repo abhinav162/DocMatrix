@@ -64,6 +64,65 @@ export class AuthController {
   }
 
   /**
+   * Register a new admin user
+   * @param req Request
+   * @param res Response
+   */
+  public static async createAdmin(req: Request, res: Response): Promise<void> {
+    try {
+      const { username, password } = req.body;
+
+      // Validate input
+      if (!username || !password) {
+        res.status(400).json({
+          message: 'Username and password are required'
+        });
+        return;
+      }
+
+      if (username.length < 3) {
+        res.status(400).json({
+          message: 'Username must be at least 3 characters long'
+        });
+        return;
+      }
+
+      if (password.length < 6) {
+        res.status(400).json({
+          message: 'Password must be at least 6 characters long'
+        });
+        return;
+      }
+
+      // Create admin user
+      const user = await UserService.registerUser(username, password, true);
+
+      // Set user in session
+      if (req.session) {
+        req.session.userId = user.id;
+        req.session.isAdmin = user.role === 'admin';
+      }
+
+      res.status(201).json({
+        message: 'Admin user registered successfully',
+        user
+      });
+    }
+    catch (error: any) {
+      if (error.message === 'Username already exists') {
+        res.status(409).json({
+          message: 'Username already exists'
+        });
+      } else {
+        console.error('Error in registerAdmin:', error);
+        res.status(500).json({
+          message: 'An error occurred during admin registration'
+        });
+      }
+    }
+  }
+
+  /**
    * Log in a user
    * @param req Request
    * @param res Response
@@ -143,26 +202,26 @@ export class AuthController {
     try {
       // req.user is set by the auth middleware
       const userId = req.session?.userId;
-      
+
       if (!userId) {
         res.status(401).json({
           message: 'Not authenticated'
         });
         return;
       }
-      
+
       const user = await UserService.getUserById(userId);
-      
+
       if (!user) {
         if (req.session) {
-          req.session.destroy(() => {});
+          req.session.destroy(() => { });
         }
         res.status(401).json({
           message: 'User not found'
         });
         return;
       }
-      
+
       res.status(200).json({
         user
       });

@@ -12,6 +12,13 @@ const router = express.Router();
 router.post('/register', AuthController.register);
 
 /**
+ * @route POST /auth/create-admin
+ * @description Create an admin user
+ * @access Public
+ */
+router.post('/create-admin', AuthController.createAdmin);
+
+/**
  * @route POST /auth/login
  * @description Log in a user
  * @access Public

@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { ScanningService } from '../services/scanningService';
-import { CreditService } from '../services/creditService';
 
 /**
  * Controller for document scanning endpoints
@@ -41,19 +40,6 @@ export class ScanController {
           });
           return;
         }
-      }
-
-      // Check if user has enough credits
-      try {
-        await CreditService.deductCreditsForScan(req.user.id);
-      } catch (error: any) {
-        if (error.message === 'Not enough credits') {
-          res.status(403).json({
-            message: 'Not enough credits. Please request more credits.'
-          });
-          return;
-        }
-        throw error;
       }
 
       // Scan document
@@ -122,8 +108,6 @@ export class ScanController {
         }
       }
 
-      // Getting previous scan results doesn't cost credits
-      
       // Get previous scan results
       const scanResults = await ScanningService.getPreviousScanResults(
         req.user.id,
