@@ -9,3 +9,23 @@ export interface DocumentScan {
 
 export type DocumentScanCreationParams = Omit<DocumentScan, 'id' | 'scan_date'>;
 export type DocumentScanUpdateParams = Partial<Omit<DocumentScan, 'id' | 'scan_date'>>;
+
+export interface ScanMatchResult {
+  documentId: number;
+  title: string;
+  similarityScore: number;
+  isUserDocument: boolean;
+}
+
+export interface ScanRequest {
+  documentId: number;
+  minSimilarityThreshold?: number;
+}
+
+export interface ScanResult {
+  sourceDocumentId: number;
+  sourceDocumentTitle: string;
+  matches: ScanMatchResult[];
+  scanDate: string;
+  algorithm: string;
+}
