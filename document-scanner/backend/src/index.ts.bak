@@ -11,8 +11,7 @@ import path from 'path';
 // Load environment variables
 dotenv.config();
 
-// Import routes
-import routes from './routes';
+// Import routes (will be created later)
 import healthRouter from './routes/health';
 
 // Initialize Express app
@@ -40,7 +39,7 @@ app.use(cookieParser());
 
 // Session configuration
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'default_secret_change_me',
+  secret: process.env.SESSION_SECRET || 'session_secret_default',
   resave: false,
   saveUninitialized: false,
   cookie: {
@@ -51,7 +50,6 @@ app.use(session({
 }));
 
 // Routes
-app.use('/api', routes);
 app.use('/api/health', healthRouter);
 
 // Error handling middleware

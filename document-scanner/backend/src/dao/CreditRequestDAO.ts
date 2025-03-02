@@ -112,7 +112,7 @@ class CreditRequestDAO implements BaseDAO<CreditRequest, CreditRequestCreationPa
     try {
       const db = await DBConnection.getConnection();
       const result = await db.run('DELETE FROM credit_requests WHERE id = ?', id);
-      return result.changes > 0;
+      return result?.changes ? result.changes > 0 : false;
     } catch (error) {
       console.error('Error deleting credit request:', error);
       throw error;
