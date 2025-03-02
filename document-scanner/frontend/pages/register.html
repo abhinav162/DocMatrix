@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - Document Scanner</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/auth.css">
+</head>
+<body>
+  <header>
+    <nav id="main-nav">
+      <!-- Navigation will be loaded dynamically -->
+    </nav>
+  </header>
+
+  <main>
+    <section class="auth-container">
+      <div class="auth-box">
+        <h1>Create Account</h1>
+        <p class="subtitle">Sign up to start scanning documents</p>
+        
+        <div id="error-message" class="error-message"></div>
+        
+        <form id="register-form" class="auth-form">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required minlength="3">
+            <span class="form-hint">Username must be at least 3 characters long</span>
+          </div>
+          
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required minlength="6">
+            <span class="form-hint">Password must be at least 6 characters long</span>
+          </div>
+          
+          <div class="form-group">
+            <label for="confirm-password">Confirm Password</label>
+            <input type="password" id="confirm-password" name="confirm-password" required>
+            <span class="form-hint">Passwords must match</span>
+          </div>
+          
+          <button type="submit" class="btn primary auth-btn">Register</button>
+        </form>
+        
+        <div class="auth-footer">
+          <p>Already have an account? <a href="login.html">Log in</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2023 Document Scanner. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="../js/auth/register.js" type="module"></script>
+  <script src="../js/components/navigation.js" type="module"></script>
+</body>
+</html>

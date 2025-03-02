@@ -17,7 +17,7 @@ import healthRouter from './routes/health';
 
 // Initialize Express app
 const app: Express = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 
 // Security middleware
 app.use(helmet());
@@ -29,7 +29,7 @@ app.use(morgan('dev'));
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
     ? 'https://yourdomain.com' 
-    : 'http://localhost:5500',
+    : true,
   credentials: true
 }));
 
@@ -44,9 +44,12 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: process.env.NODE_ENV === 'production',
+    secure: process.env.NODE_ENV === 'production' ? true : false,
     httpOnly: true,
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    maxAge: 24 * 60 * 60 * 1000,
+    path: '/',
+    sameSite: 'lax', 
+    domain: "localhost"
   }
 }));
 

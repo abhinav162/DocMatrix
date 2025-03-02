@@ -10,8 +10,15 @@
 </head>
 <body>
   <header>
-    <nav id="main-nav">
-      <!-- Navigation will be loaded dynamically -->
+    <nav>
+      <div class="logo">Document Scanner</div>
+      <ul class="nav-links">
+        <li><a href="#" id="home-link">Home</a></li>
+        <li><a href="#" id="upload-link">Upload</a></li>
+        <li><a href="#" id="scans-link">Scans</a></li>
+        <li><a href="#" id="login-link">Login</a></li>
+        <li><a href="#" id="register-link">Register</a></li>
+      </ul>
     </nav>
   </header>
 
@@ -55,19 +62,5 @@
   </footer>
 
   <script src="js/main.js" type="module"></script>
-  <script src="js/components/navigation.js" type="module"></script>
-  <script>
-    // Get Started button functionality
-    document.getElementById('get-started-btn').addEventListener('click', () => {
-      // Redirect to login or register page
-      window.location.href = './pages/login.html';
-    });
-    
-    // Learn More button functionality
-    document.getElementById('learn-more-btn').addEventListener('click', () => {
-      // Scroll to features section
-      document.getElementById('features-section').scrollIntoView({ behavior: 'smooth' });
-    });
-  </script>
 </body>
 </html>

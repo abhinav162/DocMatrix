@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile - Document Scanner</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/profile.css">
+</head>
+<body>
+  <header>
+    <nav id="main-nav">
+      <!-- Navigation will be loaded dynamically -->
+    </nav>
+  </header>
+
+  <main>
+    <section class="profile-container">
+      <div class="profile-header">
+        <h1>Your Profile</h1>
+      </div>
+      
+      <div class="profile-content">
+        <div class="profile-section user-info">
+          <h2>User Information</h2>
+          <div class="info-item">
+            <strong>Username:</strong>
+            <span id="username">Loading...</span>
+          </div>
+          <div class="info-item">
+            <strong>Account Type:</strong>
+            <span id="role">Loading...</span>
+          </div>
+          <div class="info-item">
+            <strong>Account Created:</strong>
+            <span id="created-at">Loading...</span>
+          </div>
+        </div>
+        
+        <div class="profile-section credit-info">
+          <h2>Credit Information</h2>
+          <div class="info-item">
+            <strong>Available Credits:</strong>
+            <span id="available-credits">Loading...</span>
+          </div>
+          <div class="info-item">
+            <strong>Credits Used Today:</strong>
+            <span id="credits-used">Loading...</span>
+          </div>
+          <div class="info-item">
+            <strong>Last Reset:</strong>
+            <span id="last-reset">Loading...</span>
+          </div>
+          
+          <button id="request-credits-btn" class="btn primary">Request More Credits</button>
+          
+          <div id="request-credits-form" class="request-form" style="display: none;">
+            <h3>Request Additional Credits</h3>
+            <div class="form-group">
+              <label for="credits-amount">Amount (1-100):</label>
+              <input type="number" id="credits-amount" min="1" max="100" value="50">
+            </div>
+            <div class="form-group">
+              <label for="credits-reason">Reason (optional):</label>
+              <textarea id="credits-reason" rows="3"></textarea>
+            </div>
+            <div class="form-actions">
+              <button id="submit-credits-request" class="btn primary">Submit Request</button>
+              <button id="cancel-credits-request" class="btn secondary">Cancel</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="profile-section activity-summary">
+          <h2>Activity Summary</h2>
+          <div class="info-item">
+            <strong>Documents Uploaded:</strong>
+            <span id="docs-uploaded">-</span>
+          </div>
+          <div class="info-item">
+            <strong>Scans Performed:</strong>
+            <span id="scans-performed">-</span>
+          </div>
+        </div>
+      </div>
+      
+      <div id="status-message" class="status-message"></div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2023 Document Scanner. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="../js/auth/profile.js" type="module"></script>
+  <script src="../js/components/navigation.js" type="module"></script>
+</body>
+</html>

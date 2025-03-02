@@ -148,6 +148,8 @@ export class AuthController {
         req.session.isAdmin = user.role === 'admin';
       }
 
+      console.log('Session:', req.session);
+
       res.status(200).json({
         message: 'Login successful',
         user
@@ -202,6 +204,8 @@ export class AuthController {
     try {
       // req.user is set by the auth middleware
       const userId = req.session?.userId;
+
+      console.log("session profile", req.session);
 
       if (!userId) {
         res.status(401).json({

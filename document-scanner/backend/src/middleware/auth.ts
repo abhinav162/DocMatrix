@@ -19,6 +19,8 @@ export class AuthMiddleware {
     try {
       const userId = req.session?.userId;
 
+      console.log("session", req.session);
+
       if (!userId) {
         res.status(401).json({
           message: 'Authentication required'
