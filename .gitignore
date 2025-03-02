@@ -1,1 +1,3 @@
 ./document-scanner/backend/.env
+./setup.sh
+./document-scanner/backend/package-lock.json
