@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Document - Document Scanner</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/documents.css">
+</head>
+<body>
+  <header>
+    <nav id="main-nav">
+      <!-- Navigation will be loaded dynamically -->
+    </nav>
+  </header>
+
+  <main>
+    <section class="document-container">
+      <div class="page-header">
+        <h1>Upload Document</h1>
+        <p>Upload a text file to scan for similarities</p>
+      </div>
+      
+      <div class="upload-container">
+        <div id="upload-area" class="upload-area">
+          <div class="upload-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+          </div>
+          <div class="upload-text">
+            <p>Drag and drop your file here</p>
+            <p>or</p>
+            <label for="file-input" class="btn primary">Browse Files</label>
+            <input type="file" id="file-input" accept=".txt" hidden>
+          </div>
+        </div>
+        
+        <div id="upload-progress" class="upload-progress" style="display: none;">
+          <div class="progress-header">
+            <p id="file-name">Uploading...</p>
+            <button id="cancel-upload" class="btn secondary small">Cancel</button>
+          </div>
+          <div class="progress-bar-container">
+            <div id="progress-bar" class="progress-bar"></div>
+          </div>
+          <p id="progress-text">0%</p>
+        </div>
+        
+        <div id="upload-form" class="upload-form" style="display: none;">
+          <div class="form-group">
+            <label for="document-title">Document Title</label>
+            <input type="text" id="document-title" placeholder="Enter a title for your document">
+          </div>
+          
+          <div class="form-group">
+            <label for="document-visibility">Document Visibility</label>
+            <select id="document-visibility">
+              <option value="private">Private (only visible to you)</option>
+              <option value="public">Public (visible to all users)</option>
+            </select>
+          </div>
+          
+          <div class="form-actions">
+            <button id="upload-submit" class="btn primary">Upload Document</button>
+            <button id="upload-cancel" class="btn secondary">Cancel</button>
+          </div>
+        </div>
+        
+        <div id="upload-success" class="upload-success" style="display: none;">
+          <div class="success-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+          </div>
+          <h2>Upload Successful</h2>
+          <p>Your document has been uploaded successfully.</p>
+          <div class="success-actions">
+            <button id="scan-now" class="btn primary">Scan Now</button>
+            <button id="view-document" class="btn secondary">View Document</button>
+            <button id="upload-another" class="btn secondary">Upload Another</button>
+          </div>
+        </div>
+        
+        <div id="upload-error" class="upload-error" style="display: none;">
+          <div class="error-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12" y2="16"></line>
+            </svg>
+          </div>
+          <h2>Upload Failed</h2>
+          <p id="error-message">An error occurred while uploading your document.</p>
+          <div class="error-actions">
+            <button id="try-again" class="btn primary">Try Again</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2023 Document Scanner. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="../js/components/navigation.js" type="module"></script>
+  <script src="../js/documents/upload.js" type="module"></script>
+</body>
+</html>

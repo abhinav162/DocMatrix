@@ -5,7 +5,7 @@ class ApiService {
   constructor() {
     this.baseUrl = '/api';
     this.headers = {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     };
   }
 
@@ -84,6 +84,31 @@ class ApiService {
       return await response.json();
     } catch (error) {
       console.error(`Error patching ${endpoint}:`, error);
+      throw error;
+    }
+  }
+
+  /**
+   * Make a DELETE request
+   * @param {string} endpoint - API endpoint
+   * @returns {Promise<any>} Response data
+   */
+  async delete(endpoint) {
+    try {
+      const response = await fetch(`${this.baseUrl}${endpoint}`, {
+        method: 'DELETE',
+        headers: this.headers,
+        credentials: 'include' // Include cookies for session authentication
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'An error occurred');
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error(`Error deleting from ${endpoint}:`, error);
       throw error;
     }
   }

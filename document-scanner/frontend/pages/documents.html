@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Documents - Document Scanner</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/documents.css">
+</head>
+<body>
+  <header>
+    <nav id="main-nav">
+      <!-- Navigation will be loaded dynamically -->
+    </nav>
+  </header>
+
+  <main>
+    <section class="document-container">
+      <div class="page-header">
+        <h1>My Documents</h1>
+        <p>Manage your uploaded documents</p>
+      </div>
+      
+      <div class="document-controls">
+        <div class="control-group">
+          <input type="text" id="search-input" placeholder="Search documents..." class="search-input">
+          <button id="search-btn" class="btn primary">Search</button>
+        </div>
+        
+        <div class="control-group">
+          <label for="visibility-filter">Filter:</label>
+          <select id="visibility-filter" class="filter-select">
+            <option value="all">All Documents</option>
+            <option value="private">Private Only</option>
+            <option value="public">Public Only</option>
+          </select>
+          
+          <label for="sort-option">Sort:</label>
+          <select id="sort-option" class="sort-select">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="title">Title A-Z</option>
+          </select>
+        </div>
+        
+        <a href="./upload.html" class="btn primary">Upload New</a>
+      </div>
+      
+      <div id="documents-list" class="documents-list">
+        <div id="loading-indicator" class="loading-indicator">
+          <div class="spinner"></div>
+          <p>Loading documents...</p>
+        </div>
+        
+        <div id="no-documents" class="no-documents" style="display: none;">
+          <div class="no-data-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="12" y1="18" x2="12" y2="12"></line>
+              <line x1="9" y1="15" x2="15" y2="15"></line>
+            </svg>
+          </div>
+          <h2>No Documents Found</h2>
+          <p>You haven't uploaded any documents yet.</p>
+          <a href="./upload.html" class="btn primary">Upload Your First Document</a>
+        </div>
+        
+        <div id="document-grid" class="document-grid">
+          <!-- Document cards will be inserted here -->
+        </div>
+      </div>
+      
+      <div id="status-message" class="status-message" style="display: none;"></div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2023 Document Scanner. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Document Card Template -->
+  <template id="document-card-template">
+    <div class="document-card">
+      <div class="document-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+      </div>
+      <div class="document-info">
+        <h3 class="document-title">Document Title</h3>
+        <p class="document-date">Uploaded on: <span class="date-value">Jan 1, 2023</span></p>
+        <div class="document-visibility">
+          <span class="visibility-badge">Private</span>
+        </div>
+      </div>
+      <div class="document-actions">
+        <button class="btn secondary small view-btn">View</button>
+        <button class="btn primary small scan-btn">Scan</button>
+        <div class="dropdown">
+          <button class="btn secondary small dropdown-toggle">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="1"></circle>
+              <circle cx="12" cy="5" r="1"></circle>
+              <circle cx="12" cy="19" r="1"></circle>
+            </svg>
+          </button>
+          <div class="dropdown-menu">
+            <button class="toggle-visibility-btn">Make Public</button>
+            <button class="delete-btn">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <div id="delete-confirmation-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Confirm Deletion</h2>
+        <button class="close-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete this document? This action cannot be undone.</p>
+      </div>
+      <div class="modal-footer">
+        <button id="confirm-delete-btn" class="btn danger">Delete</button>
+        <button id="cancel-delete-btn" class="btn secondary">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/components/navigation.js" type="module"></script>
+  <script src="../js/documents/documentList.js" type="module"></script>
+</body>
+</html>
