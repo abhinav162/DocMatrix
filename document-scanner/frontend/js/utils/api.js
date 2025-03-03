@@ -3,7 +3,7 @@
  */
 class ApiService {
   constructor() {
-    this.baseUrl = 'http://localhost:4000/api';
+    this.baseUrl = '/api';
     this.headers = {
       'Content-Type': 'application/json',
     };

@@ -53,6 +53,9 @@ app.use(session({
   }
 }));
 
+// Serve static files from the frontend directory
+app.use(express.static(path.join(__dirname, '../../frontend')));
+
 // Routes
 app.use('/api', routes);
 app.use('/api/health', healthRouter);
