@@ -6,6 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document Scanning System</title>
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/integration.css">
   <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
 </head>
 <body>
@@ -50,24 +51,11 @@
 
   <footer>
     <div class="footer-content">
-      <p>&copy; 2025 Document Scanning System. All rights reserved.</p>
+      <p>&copy; 2023 Document Scanning System. All rights reserved.</p>
     </div>
   </footer>
 
-  <script src="js/main.js" type="module"></script>
   <script src="js/components/navigation.js" type="module"></script>
-  <script>
-    // Get Started button functionality
-    document.getElementById('get-started-btn').addEventListener('click', () => {
-      // Redirect to login or register page
-      window.location.href = './pages/login.html';
-    });
-    
-    // Learn More button functionality
-    document.getElementById('learn-more-btn').addEventListener('click', () => {
-      // Scroll to features section
-      document.getElementById('features-section').scrollIntoView({ behavior: 'smooth' });
-    });
-  </script>
+  <script src="js/app.js" type="module"></script>
 </body>
 </html>

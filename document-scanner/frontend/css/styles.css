@@ -236,6 +236,10 @@ nav {
 
 /* Footer */
 footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
   background-color: var(--primary-color);
   color: white;
   padding: 1.5rem 0;

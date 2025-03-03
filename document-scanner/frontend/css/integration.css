@@ -1,0 +1,144 @@
+/* Integration styles for cohesive components */
+
+/* Loading overlay */
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.loading-overlay.fullscreen {
+  position: fixed;
+  z-index: 9999;
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+}
+
+/* Error messages */
+.error-message {
+  background-color: #ffebee;
+  color: #d32f2f;
+  padding: 0.75rem;
+  border-radius: var(--border-radius);
+  margin-bottom: 1rem;
+}
+
+.input-error {
+  color: #d32f2f;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+input.error,
+select.error,
+textarea.error {
+  border-color: #d32f2f;
+}
+
+/* Status messages */
+.status-message {
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.status-message.success {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-message.error {
+  background-color: #ffebee;
+  color: #d32f2f;
+}
+
+.status-message.info {
+  background-color: #e3f2fd;
+  color: #1565c0;
+}
+
+.status-message.warning {
+  background-color: #fff8e1;
+  color: #f57f17;
+}
+
+/* Enhanced responsive utilities */
+@media (max-width: 576px) {
+  .document-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .control-group {
+    margin-bottom: 1rem;
+  }
+  
+  .search-input {
+    width: 100%;
+  }
+  
+  .document-card {
+    flex-direction: column;
+  }
+  
+  .document-icon {
+    margin-bottom: 1rem;
+  }
+  
+  .document-actions {
+    flex-direction: row;
+    margin-top: 1rem;
+  }
+  
+  .btn {
+    width: 100%;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .history-item {
+    flex-direction: column;
+  }
+  
+  .history-actions {
+    margin-top: 1rem;
+  }
+}
+
+/* Accessibility improvements */
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+.btn:focus {
+  box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.5);
+  outline: none;
+}
+
+/* Improved focus visibility */
+*:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
