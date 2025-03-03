@@ -54,7 +54,7 @@ class App {
       await authService.checkAuthStatus();
       
       // Initialize responsive handlers
-      this.initResponsiveHandlers();
+      // this.initResponsiveHandlers();
       
       // Initialize page-specific modules
       this.initCurrentPage();

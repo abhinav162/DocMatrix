@@ -117,7 +117,10 @@ export class CreditService {
       // Get current balance
       const balance = await this.getCreditBalance(userId);
 
-      if (balance.remainingCredits <= 0) {
+      // Extra approved credits
+      const extraApprovedCredits = await this.getExtraApprovedCredits(userId);
+
+      if (balance.remainingCredits <= 0 && extraApprovedCredits <= 0) {
         throw new Error('Not enough credits');
       }
 
@@ -130,9 +133,6 @@ export class CreditService {
       const updatedUser = await UserDAO.update(userId, {
         daily_credits_used: user.daily_credits_used + 1
       });
-
-      // Extra approved credits
-      const extraApprovedCredits = await this.getExtraApprovedCredits(userId);
 
       return {
         dailyCreditsUsed: updatedUser!.daily_credits_used,
@@ -224,13 +224,13 @@ export class CreditService {
         status: 'approved'
       });
 
-      // Credit the user's account by adjusting daily_credits_used
-      // We decrease the daily_credits_used to effectively add more credits
-      const newCreditsUsed = Math.max(0, user.daily_credits_used - request.requested_amount);
+      // // Credit the user's account by adjusting daily_credits_used
+      // // We decrease the daily_credits_used to effectively add more credits
+      // const newCreditsUsed = Math.max(0, user.daily_credits_used - request.requested_amount);
 
-      await UserDAO.update(user.id!, {
-        daily_credits_used: newCreditsUsed
-      });
+      // await UserDAO.update(user.id!, {
+      //   daily_credits_used: newCreditsUsed
+      // });
 
       return updatedRequest!;
     } catch (error) {
