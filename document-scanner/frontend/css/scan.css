@@ -1,0 +1,277 @@
+/* Scan functionality styles */
+
+/* Scan setup */
+.scan-setup {
+  background-color: white;
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  box-shadow: var(--shadow);
+  margin-bottom: 2rem;
+}
+
+.scan-selector {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.scan-selector h2 {
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* Range slider */
+.range-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.threshold-slider {
+  flex: 1;
+  height: 8px;
+  -webkit-appearance: none;
+  background: #ddd;
+  border-radius: 4px;
+  outline: none;
+}
+
+.threshold-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  cursor: pointer;
+}
+
+.threshold-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  cursor: pointer;
+}
+
+#threshold-value {
+  font-weight: bold;
+  min-width: 50px;
+  text-align: right;
+}
+
+/* Scan progress */
+.scan-progress {
+  background-color: white;
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  box-shadow: var(--shadow);
+  margin-bottom: 2rem;
+}
+
+.scan-status {
+  text-align: center;
+}
+
+.scan-status h2 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.progress-indicator {
+  margin: 2rem 0;
+}
+
+/* Scan results */
+.scan-results {
+  background-color: white;
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  box-shadow: var(--shadow);
+}
+
+.results-header {
+  margin-bottom: 2rem;
+}
+
+.results-header h2 {
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.results-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+  color: var(--light-text);
+}
+
+.meta-item strong {
+  color: var(--text-color);
+}
+
+.results-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Match list */
+.matches-list {
+  margin-top: 2rem;
+}
+
+.matches-count {
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.matches-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .matches-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Match card */
+.match-card {
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  transition: box-shadow 0.3s;
+}
+
+.match-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.match-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.match-title {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.match-score {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.match-meta {
+  font-size: 0.9rem;
+  color: var(--light-text);
+  margin-bottom: 1rem;
+}
+
+.match-meta .owner {
+  font-weight: 500;
+}
+
+.match-content {
+  background-color: var(--background-color);
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  font-size: 0.9rem;
+  max-height: 150px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  margin-bottom: 1rem;
+}
+
+.match-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+/* No matches */
+.no-matches {
+  text-align: center;
+  padding: 3rem 0;
+}
+
+/* Comparison view */
+.comparison-view {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+@media (min-width: 992px) {
+  .comparison-view {
+    grid-template-rows: repeat(2, 1fr);
+  }
+}
+
+.document-panel {
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+}
+
+.document-panel-header {
+  padding: 1rem;
+  background-color: var(--background-color);
+  border-bottom: 1px solid var(--border-color);
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
+}
+
+.document-panel-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.document-panel-content {
+  padding: 1rem;
+  white-space: pre-wrap;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* Scan history */
+.scan-history {
+  margin-top: 2rem;
+}
+
+.history-item {
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.history-info {
+  flex: 1;
+}
+
+.history-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+}
+
+.history-meta {
+  font-size: 0.9rem;
+  color: var(--light-text);
+}
+
+.history-actions {
+  display: flex;
+  gap: 0.5rem;
+}

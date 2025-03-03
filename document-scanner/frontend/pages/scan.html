@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scan Document - Document Scanner</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/documents.css">
+  <link rel="stylesheet" href="../css/scan.css">
+</head>
+<body>
+  <header>
+    <nav id="main-nav">
+      <!-- Navigation will be loaded dynamically -->
+    </nav>
+  </header>
+
+  <main>
+    <section class="document-container">
+      <div class="page-header">
+        <h1>Scan Document</h1>
+        <p>Find similar documents in the system</p>
+      </div>
+      
+      <div id="scan-setup" class="scan-setup">
+        <div class="scan-selector">
+          <h2>Select Document to Scan</h2>
+          
+          <div id="document-select-loading" class="loading-indicator">
+            <div class="spinner"></div>
+            <p>Loading documents...</p>
+          </div>
+          
+          <div id="no-documents-message" class="no-documents" style="display: none;">
+            <p>You don't have any documents to scan.</p>
+            <a href="./upload.html" class="btn primary">Upload a Document</a>
+          </div>
+          
+          <div id="document-selection" class="document-selection" style="display: none;">
+            <div class="form-group">
+              <label for="document-dropdown">Choose a Document:</label>
+              <select id="document-dropdown" class="document-dropdown"></select>
+            </div>
+            
+            <div class="form-group">
+              <label for="similarity-threshold">Minimum Similarity Threshold:</label>
+              <div class="range-container">
+                <input type="range" id="similarity-threshold" min="0" max="100" value="70" step="5" class="threshold-slider">
+                <span id="threshold-value">70%</span>
+              </div>
+            </div>
+            
+            <button id="start-scan-btn" class="btn primary">Start Scan</button>
+          </div>
+        </div>
+      </div>
+      
+      <div id="scan-progress" class="scan-progress" style="display: none;">
+        <div class="scan-status">
+          <h2>Scanning Document</h2>
+          <p>Looking for similar documents...</p>
+          <div class="progress-indicator">
+            <div class="spinner"></div>
+          </div>
+          <p id="scan-status-message">This might take a moment.</p>
+        </div>
+      </div>
+      
+      <div id="scan-results" class="scan-results" style="display: none;">
+        <div class="results-header">
+          <h2>Scan Results</h2>
+          <p>Results for document: <strong id="source-document-title">Document Title</strong></p>
+          
+          <div class="results-meta">
+            <div class="meta-item">
+              <strong>Scan Date:</strong> <span id="scan-date">January 1, 2023</span>
+            </div>
+            <div class="meta-item">
+              <strong>Algorithm:</strong> <span id="scan-algorithm">Levenshtein</span>
+            </div>
+            <div class="meta-item">
+              <strong>Threshold:</strong> <span id="scan-threshold">70%</span>
+            </div>
+          </div>
+          
+          <div class="results-actions">
+            <button id="new-scan-btn" class="btn primary">New Scan</button>
+            <button id="export-results-btn" class="btn secondary">Export Results</button>
+          </div>
+        </div>
+        
+        <div class="matches-list">
+          <h3 class="matches-count">Found <span id="matches-count">0</span> similar documents</h3>
+          
+          <div id="no-matches" class="no-matches" style="display: none;">
+            <p>No similar documents were found matching your criteria.</p>
+            <p>Try lowering the similarity threshold to find more matches.</p>
+            <button id="adjust-threshold-btn" class="btn secondary">Adjust Threshold</button>
+          </div>
+          
+          <div id="matches-grid" class="matches-grid">
+            <!-- Match cards will be inserted here -->
+          </div>
+        </div>
+      </div>
+      
+      <div id="comparison-view" class="comparison-view" style="display: none;">
+        <div class="document-panel">
+          <div class="document-panel-header">
+            <h3 id="source-document-panel-title">Source Document</h3>
+          </div>
+          <div id="source-document-content" class="document-panel-content">
+            Source document content will appear here.
+          </div>
+        </div>
+        
+        <div class="document-panel">
+          <div class="document-panel-header">
+            <h3 id="match-document-panel-title">Matched Document</h3>
+          </div>
+          <div id="match-document-content" class="document-panel-content">
+            Matched document content will appear here.
+          </div>
+        </div>
+        
+        <div class="comparison-actions" style="grid-column: 1 / -1; text-align: center; margin-top: 1rem;">
+          <button id="back-to-results-btn" class="btn secondary">Back to Results</button>
+        </div>
+      </div>
+      
+      <div id="scan-history" class="scan-history" style="display: none;">
+        <h2>Scan History</h2>
+        <div id="history-list">
+          <!-- History items will be inserted here -->
+        </div>
+      </div>
+      
+      <div id="status-message" class="status-message" style="display: none;"></div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2023 Document Scanner. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Match Card Template -->
+  <template id="match-card-template">
+    <div class="match-card">
+      <div class="match-header">
+        <h3 class="match-title">Document Title</h3>
+        <div class="match-score">85%</div>
+      </div>
+      <div class="match-meta">
+        <span class="owner">Owner: You</span> • 
+        <span class="date">Uploaded on January 1, 2023</span>
+      </div>
+      <div class="match-content">
+        Preview of document content...
+      </div>
+      <div class="match-actions">
+        <button class="btn secondary small compare-btn">Compare</button>
+        <button class="btn primary small view-btn">View</button>
+      </div>
+    </div>
+  </template>
+  
+  <!-- History Item Template -->
+  <template id="history-item-template">
+    <div class="history-item">
+      <div class="history-info">
+        <h3 class="history-title">Document Title</h3>
+        <div class="history-meta">
+          <span class="date">January 1, 2023</span> • 
+          <span class="matches">5 matches found</span>
+        </div>
+      </div>
+      <div class="history-actions">
+        <button class="btn secondary small view-scan-btn">View Results</button>
+      </div>
+    </div>
+  </template>
+
+  <script src="../js/components/navigation.js" type="module"></script>
+  <script src="../js/documents/scan.js" type="module"></script>
+</body>
+</html>

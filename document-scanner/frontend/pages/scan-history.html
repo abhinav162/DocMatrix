@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scan History - Document Scanner</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/documents.css">
+  <link rel="stylesheet" href="../css/scan.css">
+</head>
+<body>
+  <header>
+    <nav id="main-nav">
+      <!-- Navigation will be loaded dynamically -->
+    </nav>
+  </header>
+
+  <main>
+    <section class="document-container">
+      <div class="page-header">
+        <h1>Scan History</h1>
+        <p>View your past document scans</p>
+      </div>
+      
+      <div id="history-container" class="history-container">
+        <div id="loading-indicator" class="loading-indicator">
+          <div class="spinner"></div>
+          <p>Loading scan history...</p>
+        </div>
+        
+        <div id="no-history" class="no-documents" style="display: none;">
+          <div class="no-data-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="8" y1="12" x2="16" y2="12"></line>
+            </svg>
+          </div>
+          <h2>No Scan History</h2>
+          <p>You haven't performed any document scans yet.</p>
+          <a href="./scan.html" class="btn primary">Scan a Document</a>
+        </div>
+        
+        <div id="history-list" class="history-list" style="display: none;">
+          <!-- History items will be inserted here -->
+        </div>
+      </div>
+      
+      <div id="status-message" class="status-message" style="display: none;"></div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2023 Document Scanner. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- History Item Template -->
+  <template id="history-item-template">
+    <div class="history-item">
+      <div class="history-info">
+        <h3 class="history-title">Document Title</h3>
+        <div class="history-meta">
+          <span class="date">January 1, 2023</span> • 
+          <span class="matches">5 matches found</span>
+        </div>
+      </div>
+      <div class="history-actions">
+        <button class="btn secondary small view-scan-btn">View Results</button>
+      </div>
+    </div>
+  </template>
+
+  <script src="../js/components/navigation.js" type="module"></script>
+  <script src="../js/documents/scanHistory.js" type="module"></script>
+</body>
+</html>
