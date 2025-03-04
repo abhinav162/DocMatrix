@@ -2,15 +2,14 @@
  * Main application initialization
  */
 import { authService } from './auth/authService.js';
-import { documentService } from './documents/documentService.js';
 import ErrorHandler from './utils/errorHandler.js';
-import LoadingManager from './utils/loadingManager.js';
 import ResponsiveUtil from './utils/responsive.js';
 
 class App {
   constructor() {
     this.initialized = false;
     this.pageModules = {
+      '/': () => this.initHomePage(),
       '/index.html': () => this.initHomePage(),
       '/pages/login.html': () => this.initLoginPage(),
       '/pages/register.html': () => this.initRegisterPage(),
