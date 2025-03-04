@@ -4,7 +4,6 @@ import DocumentDAO from '../dao/DocumentDAO';
 import DocumentScanDAO from '../dao/DocumentScanDAO';
 import { TextComparisonUtil } from '../utils/textComparison';
 import GeminiApiClient from './geminiApiClient';
-import { CacheUtil } from '../utils/cacheUtil';
 
 /**
  * Service for document scanning operations
