@@ -3,6 +3,8 @@ import { DocumentScan, ScanMatchResult, ScanResult } from '../models/DocumentSca
 import DocumentDAO from '../dao/DocumentDAO';
 import DocumentScanDAO from '../dao/DocumentScanDAO';
 import { TextComparisonUtil } from '../utils/textComparison';
+import GeminiApiClient from './geminiApiClient';
+import { CacheUtil } from '../utils/cacheUtil';
 
 /**
  * Service for document scanning operations
@@ -10,6 +12,9 @@ import { TextComparisonUtil } from '../utils/textComparison';
 export class ScanningService {
   private static readonly DEFAULT_SIMILARITY_THRESHOLD = 70.0;
   private static readonly DEFAULT_ALGORITHM = 'levenshtein';
+  private static readonly GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
+  private static readonly GEMINI_API_URL = process.env.GEMINI_API_URL || '';
+  private static geminiClient = new GeminiApiClient(this.GEMINI_API_KEY, this.GEMINI_API_URL);
 
   /**
    * Scan a document against all accessible documents
@@ -68,11 +73,21 @@ export class ScanningService {
           doc.content
         );
 
-        // Calculate similarity score
-        const similarityScore = TextComparisonUtil.calculateSimilarity(
-          optimizedSourceText,
-          optimizedTargetText
-        );
+        let similarityScore: number;
+
+        try {
+          // Use Gemini API for similarity calculation
+          const sourceEmbedding = await this.geminiClient.getEmbeddings(optimizedSourceText);
+          const targetEmbedding = await this.geminiClient.getEmbeddings(optimizedTargetText);
+          similarityScore = await this.geminiClient.calculateSimilarity(sourceEmbedding, targetEmbedding);
+        } catch (error) {
+          console.error('Error using Gemini API, falling back to basic algorithm:', error);
+          // Fallback to basic algorithm
+          similarityScore = TextComparisonUtil.calculateSimilarity(
+            optimizedSourceText,
+            optimizedTargetText
+          );
+        }
 
         // Store scan result if similarity is above threshold
         if (similarityScore >= minSimilarityThreshold) {
@@ -88,7 +103,7 @@ export class ScanningService {
             source_document_id: sourceDocument.id!,
             matched_document_id: doc.id!,
             similarity_score: similarityScore,
-            algorithm_used: this.DEFAULT_ALGORITHM
+            algorithm_used: similarityScore >= minSimilarityThreshold ? 'gemini' : this.DEFAULT_ALGORITHM
           });
         }
       }
@@ -106,7 +121,7 @@ export class ScanningService {
         sourceDocumentTitle: sourceDocument.title,
         matches,
         scanDate: new Date().toISOString(),
-        algorithm: this.DEFAULT_ALGORITHM
+        algorithm: scanRecords.length > 0 && scanRecords[0].algorithm_used === 'gemini' ? 'gemini' : this.DEFAULT_ALGORITHM
       };
     } catch (error) {
       console.error('Error scanning document:', error);
