@@ -45,7 +45,10 @@ export class ScanController {
 
       // Check if user has enough credits
       try {
-        await CreditService.deductCreditsForScan(req.user.id);
+        // If user is an admin, scanning doesn't cost credits
+        if (!req.session?.isAdmin) {
+          await CreditService.deductCreditsForScan(req.user.id);
+        }
       } catch (error: any) {
         if (error.message === 'Not enough credits') {
           res.status(403).json({
@@ -69,7 +72,7 @@ export class ScanController {
       });
     } catch (error: any) {
       console.error('Error in scanDocument:', error);
-      
+
       if (error.message === 'Source document not found') {
         res.status(404).json({
           message: 'Document not found'
@@ -102,7 +105,7 @@ export class ScanController {
       }
 
       const documentId = parseInt(req.params.docId);
-      
+
       if (isNaN(documentId)) {
         res.status(400).json({
           message: 'Invalid document ID'
@@ -123,7 +126,7 @@ export class ScanController {
       }
 
       // Getting previous scan results doesn't cost credits
-      
+
       // Get previous scan results
       const scanResults = await ScanningService.getPreviousScanResults(
         req.user.id,
@@ -136,7 +139,7 @@ export class ScanController {
       });
     } catch (error: any) {
       console.error('Error in getPreviousScanResults:', error);
-      
+
       if (error.message === 'Source document not found') {
         res.status(404).json({
           message: 'Document not found'

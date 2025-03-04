@@ -95,10 +95,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
       // Check if we have a document ID in localStorage (from document list)
       const scanDocumentId = localStorage.getItem('scanDocumentId');
+      const lastUploadedDocumentId = localStorage.getItem('lastUploadedDocumentId');
+
       if (scanDocumentId) {
         // Clear it from localStorage to avoid issues on page refresh
         localStorage.removeItem('scanDocumentId');
         selectedDocumentId = parseInt(scanDocumentId);
+      }
+
+      if (lastUploadedDocumentId) {
+        // Clear it from localStorage to avoid issues on page refresh
+        localStorage.removeItem('lastUploadedDocumentId');
+        selectedDocumentId = parseInt(lastUploadedDocumentId);
       }
       
       // Load user documents
@@ -163,9 +171,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       option.textContent = doc.title;
       documentDropdown.appendChild(option);
     });
-    
-    // Set selected document ID from dropdown
-    selectedDocumentId = parseInt(documentDropdown.value);
     
     // Add change event listener
     documentDropdown.addEventListener('change', () => {
