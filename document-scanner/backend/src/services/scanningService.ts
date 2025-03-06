@@ -73,12 +73,16 @@ export class ScanningService {
         );
 
         let similarityScore: number;
+        let algorithmUsed: string;
 
         try {
           // Use Gemini API for similarity calculation
           const sourceEmbedding = await this.geminiClient.getEmbeddings(optimizedSourceText);
           const targetEmbedding = await this.geminiClient.getEmbeddings(optimizedTargetText);
           similarityScore = await this.geminiClient.calculateSimilarity(sourceEmbedding, targetEmbedding);
+
+          console.log('Gemini similarity score:', similarityScore);
+          algorithmUsed = 'gemini';
         } catch (error) {
           console.error('Error using Gemini API, falling back to basic algorithm:', error);
           // Fallback to basic algorithm
@@ -86,6 +90,7 @@ export class ScanningService {
             optimizedSourceText,
             optimizedTargetText
           );
+          algorithmUsed = this.DEFAULT_ALGORITHM;
         }
 
         // Store scan result if similarity is above threshold
@@ -94,7 +99,7 @@ export class ScanningService {
             documentId: doc.id!,
             title: doc.title,
             similarityScore,
-            isUserDocument: doc.user_id === userId
+            isUserDocument: doc.user_id === userId,
           });
 
           // Create a scan record for the database
@@ -102,7 +107,7 @@ export class ScanningService {
             source_document_id: sourceDocument.id!,
             matched_document_id: doc.id!,
             similarity_score: similarityScore,
-            algorithm_used: similarityScore >= minSimilarityThreshold ? 'gemini' : this.DEFAULT_ALGORITHM
+            algorithm_used: algorithmUsed
           });
         }
       }
@@ -120,7 +125,8 @@ export class ScanningService {
         sourceDocumentTitle: sourceDocument.title,
         matches,
         scanDate: new Date().toISOString(),
-        algorithm: scanRecords.length > 0 && scanRecords[0].algorithm_used === 'gemini' ? 'gemini' : this.DEFAULT_ALGORITHM
+        algorithm: scanRecords.length > 0 && scanRecords[0].algorithm_used
+          ? scanRecords[0].algorithm_used : this.DEFAULT_ALGORITHM
       };
     } catch (error) {
       console.error('Error scanning document:', error);
@@ -178,12 +184,12 @@ export class ScanningService {
       const matches: ScanMatchResult[] = scanRecords
         .map((scan, index) => {
           const matchedDoc = matchedDocuments[index];
-          
+
           // Skip if document no longer exists or user doesn't have access
           if (!matchedDoc || (matchedDoc.is_private && matchedDoc.user_id !== userId)) {
             return null;
           }
-          
+
           return {
             documentId: scan.matched_document_id,
             title: matchedDoc.title,
