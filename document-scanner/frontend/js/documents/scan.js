@@ -163,6 +163,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   function populateDocumentDropdown() {
     // Clear existing options
     documentDropdown.innerHTML = '';
+
+    // Add default option
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = 'Select a document';
+    documentDropdown.appendChild(defaultOption);
     
     // Add options
     documents.forEach(doc => {
@@ -215,7 +221,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       console.error('Error scanning document:', error);
       scanProgress.style.display = 'none';
       scanSetup.style.display = 'block';
-      showError('Failed to scan document. Please try again later.');
+      showError(error.message || 'Failed to scan document. Please try again later.');
     }
   }
   

@@ -79,9 +79,9 @@ export class ScanningService {
           // Use Gemini API for similarity calculation
           const sourceEmbedding = await this.geminiClient.getEmbeddings(optimizedSourceText);
           const targetEmbedding = await this.geminiClient.getEmbeddings(optimizedTargetText);
-          similarityScore = await this.geminiClient.calculateSimilarity(sourceEmbedding, targetEmbedding);
+          const geminiSimilarityScore = await this.geminiClient.calculateSimilarity(sourceEmbedding, targetEmbedding);
 
-          console.log('Gemini similarity score:', similarityScore);
+          similarityScore = geminiSimilarityScore * 100;
           algorithmUsed = 'gemini';
         } catch (error) {
           console.error('Error using Gemini API, falling back to levenshtein algorithm:', error);
