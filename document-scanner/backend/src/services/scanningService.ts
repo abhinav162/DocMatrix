@@ -84,7 +84,7 @@ export class ScanningService {
           console.log('Gemini similarity score:', similarityScore);
           algorithmUsed = 'gemini';
         } catch (error) {
-          console.error('Error using Gemini API, falling back to basic algorithm:', error);
+          console.error('Error using Gemini API, falling back to levenshtein algorithm:', error);
           // Fallback to basic algorithm
           similarityScore = TextComparisonUtil.calculateSimilarity(
             optimizedSourceText,
