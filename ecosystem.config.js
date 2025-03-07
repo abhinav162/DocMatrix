@@ -1,15 +1,13 @@
 module.exports = {
-    apps: [
-        {
-            name: 'docmatrix',
-            script: './src/index.ts',
-            interpreter: 'ts-node',
-            watch: true,
-            env: {
-                NODE_ENV: 'production',
-                PORT: 4000,
-                HOST: '127.0.0.1'
-            }
-        }
-    ]
+  apps: [
+    {
+      name: "pdf-generator",
+      script: "npm",
+      args: "run start",
+      watch: false,
+      env: {
+        PORT: 4000,
+      },
+    },
+  ],
 };
