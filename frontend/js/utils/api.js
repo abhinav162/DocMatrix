@@ -3,9 +3,8 @@
  */
 class ApiService {
   constructor() {
-    this.baseUrl = process.env.NODE_ENV === 'production' 
-      ? 'https://docmatrix.zapto.org/api' 
-      : '/api';
+    this.baseUrl = 'https://docmatrix.zapto.org/api';
+    // this.baseUrl = '/api';
     this.headers = {
       'Content-Type': 'application/json'
     };
