@@ -8,28 +8,31 @@ A self-contained document scanning and matching platform designed for personal u
 - Credit system with daily free scans and admin-managed additional credits
 - AI-powered document matching with Google Gemini (fallback to basic algorithms)
 - Smart analytics dashboard for admins
-- Email notifications for key events
+- Email notifications for key events (e.g., new user registration, credit usage, credits request approval, etc.)
 
 ## Project Structure
 
 ```
-document-scanner/
-├── frontend/         # HTML, CSS, JS frontend
-└── backend/          # Node.js Express TypeScript backend
+DocMatrix/
+├── /          # Node.js Express TypeScript backend
+└── frontend/  # HTML, CSS, JS frontend
 ```
 
 ## Setup Instructions
 
-### Backend
+### Prerequisites
 
-1. Navigate to the backend directory: `cd backend`
+- Node.js (v18 or higher)
+- SQLite
+- SQLite Cloud
+
+### Start the application
+
+1. Navigate to the project directory: `cd /`
 2. Install dependencies: `npm install`
-3. Start the development server: `npm run dev`
-
-### Frontend
-
-1. Navigate to the frontend directory: `cd frontend`
-2. Open `index.html` in your browser
+3. Initialize the database: `npm run db:init`, make sure to set up the `sqlitecloud` database connection in the `.env` file
+4. Start the development server: `npm run dev`
+5. Open `http://localhost:4000` in your browser to access the application
 
 ## API Documentation
 
