@@ -28,7 +28,7 @@ app.use(morgan('dev'));
 // CORS configuration
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? 'https://yourdomain.com' 
+    ? 'https://docmatrix.zapto.org' 
     : true,
   credentials: true
 }));
@@ -49,7 +49,7 @@ app.use(session({
     maxAge: 24 * 60 * 60 * 1000,
     path: '/',
     sameSite: 'lax', 
-    domain: "localhost"
+    domain: process.env.NODE_ENV === 'production' ? 'docmatrix.zapto.org' : 'localhost'
   }
 }));
 
