@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: "pdf-generator",
+      name: "docmatrix",
       script: "npm",
       args: "run start",
       watch: false,
