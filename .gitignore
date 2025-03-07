@@ -1,3 +1,8 @@
-./document-scanner/backend/.env
-./setup.sh
-./document-scanner/backend/package-lock.json
+node_modules/
+dist/
+.env
+*.log
+.DS_Store
+*.sqlite
+/documents
+package-lock.json
