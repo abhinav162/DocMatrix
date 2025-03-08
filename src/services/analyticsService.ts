@@ -26,10 +26,10 @@ export class AnalyticsService {
       const totalDocumentScans = await db.get<{ count: number }>('SELECT COUNT(*) as count FROM document_scans');
 
       return {
-        totalUsers: totalUsers.count,
-        totalDocuments: totalDocuments.count,
-        totalCreditRequests: totalCreditRequests.count,
-        totalDocumentScans: totalDocumentScans.count
+        totalUsers: totalUsers?.count || 0,
+        totalDocuments: totalDocuments?.count || 0,
+        totalCreditRequests: totalCreditRequests?.count || 0,
+        totalDocumentScans: totalDocumentScans?.count || 0
       };
     } catch (error) {
       console.error('Error getting system analytics:', error);

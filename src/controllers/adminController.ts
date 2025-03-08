@@ -70,4 +70,51 @@ export class AdminController {
       });
     }
   }
+
+  /**
+   * List pending credit requests
+   * @param req Request
+   * @param res Response
+   */
+  public static async listPendingCreditRequests(req: Request, res: Response): Promise<void> {
+    try {
+      const pendingRequests = await CreditService.getPendingRequests();
+      res.status(200).json({ requests: pendingRequests });
+    } catch (error) {
+      console.error('Error in listPendingCreditRequests:', error);
+      res.status(500).json({
+        message: 'An error occurred while retrieving pending credit requests'
+      });
+    }
+  }
+
+  /**
+   * Adjust user credits
+   * @param req Request
+   * @param res Response
+   */
+  public static async adjustUserCredits(req: Request, res: Response): Promise<void> {
+    try {
+      const { userId } = req.params;
+      const { credits } = req.body;
+
+      if (!userId || !credits) {
+        res.status(400).json({
+          message: 'User ID and credits are required'
+        });
+        return;
+      }
+
+      const updatedUser = await CreditService.adjustUserCredits(parseInt(userId), credits);
+      res.status(200).json({
+        message: 'User credits adjusted successfully',
+        user: updatedUser
+      });
+    } catch (error) {
+      console.error('Error in adjustUserCredits:', error);
+      res.status(500).json({
+        message: 'An error occurred while adjusting user credits'
+      });
+    }
+  } 
 }
