@@ -1,5 +1,4 @@
 import { apiService } from './api.js';
-import LoadingManager from './loadingManager.js';
 import ErrorHandler from './errorHandler.js';
 // import Chart from '../../../node_modules/chart.js/auto'; 
 
@@ -11,6 +10,8 @@ class AdminDashboard {
     this.userTable = document.getElementById('user-table').querySelector('tbody');
     this.creditRequestsTable = document.getElementById('credit-requests-table').querySelector('tbody');
     this.analyticsChart = document.getElementById('analytics-chart').getContext('2d');
+    this.adminDashboardContainer = document.querySelector('.admin-dashboard');
+    this.loadingIndicator = document.getElementById('loading-indicator');
   }
 
   /**
@@ -26,16 +27,32 @@ class AdminDashboard {
     }
   }
 
-  /**
-   * Fetch and display admin data
-   */
-  async fetchAndDisplayAdminData() {
+  async makeAllAdminApiCalls() {
     try {
       const [users, creditRequests, analytics] = await Promise.all([
         apiService.get('/admin/users'),
         apiService.get('/admin/credits/requests'),
         apiService.get('/admin/analytics')
       ]);
+
+      return { users, creditRequests, analytics };
+    } catch (error) {
+      console.error('Error making admin API calls:', error);
+      ErrorHandler.showError('Failed to fetch admin data. Please try again later.', document.querySelector('main'), 0);
+      return { users: null, creditRequests: null, analytics: null };
+    }
+  }
+
+  /**
+   * Fetch and display admin data
+   */
+  async fetchAndDisplayAdminData() {
+    try {
+      this.showLoading(true);
+      const { users, creditRequests, analytics } = await this.makeAllAdminApiCalls();
+
+      this.showLoading(false);
+      this.adminDashboardContainer.classList.remove('hidden');
 
       this.displayUsers(users);
       this.displayCreditRequests(creditRequests);
@@ -98,6 +115,7 @@ class AdminDashboard {
     });
   }
 
+  // TODO: Implement analytics chart and chart library imports
   /**
    * Display analytics data in the chart
    * @param {Object} analytics - Analytics data
@@ -134,9 +152,9 @@ class AdminDashboard {
         const userId = target.getAttribute('data-user-id');
         const action = target.getAttribute('data-action');
         if (action === 'edit') {
-          // Handle edit user
+          await this.handleEditUser(userId);
         } else if (action === 'delete') {
-          // Handle delete user
+          await this.handleDeleteUser(userId);
         }
       }
     });
@@ -153,6 +171,24 @@ class AdminDashboard {
         }
       }
     });
+  }
+
+  /**
+   * Handle edit user
+   * @param {number} userId - User ID
+   */
+  async handleEditUser(userId) {
+    console.log('Edit user:', userId);
+    // Implement edit user functionality
+  }
+
+  /**
+   * Handle delete user
+   * @param {number} userId - User ID
+   */
+  async handleDeleteUser(userId) {
+    console.log('Delete user:', userId);
+    // Implement delete user functionality
   }
 
   /**
@@ -181,6 +217,14 @@ class AdminDashboard {
       console.error('Error denying credit request:', error);
       ErrorHandler.showError('Failed to deny credit request. Please try again later.', document.querySelector('main'), 0);
     }
+  }
+
+  /**
+   * Show or hide loading indicator
+   * @param {boolean} show - Whether to show loading
+   */
+  showLoading(show) {
+    this.loadingIndicator.style.display = show ? 'flex' : 'none';
   }
 
   /**
