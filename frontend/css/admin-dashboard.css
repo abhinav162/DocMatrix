@@ -1,0 +1,131 @@
+/* Admin Dashboard Styles */
+
+/* Dashboard container */
+.admin-dashboard {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.dashboard-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.dashboard-header h1 {
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-header p {
+  color: var(--light-text);
+}
+
+.dashboard-navigation {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.dashboard-navigation ul {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+}
+
+.dashboard-navigation a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.dashboard-navigation a:hover {
+  text-decoration: underline;
+}
+
+/* Overview cards */
+.overview-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.card {
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.card h3 {
+  color: var(--secondary-color);
+  margin-bottom: 0.5rem;
+}
+
+.card p {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+/* User management table */
+#user-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+}
+
+#user-table th,
+#user-table td {
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  text-align: left;
+}
+
+#user-table th {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+#user-table td {
+  background-color: white;
+}
+
+#user-table .btn {
+  margin-right: 0.5rem;
+}
+
+/* Credit requests table */
+#credit-requests-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+}
+
+#credit-requests-table th,
+#credit-requests-table td {
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  text-align: left;
+}
+
+#credit-requests-table th {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+#credit-requests-table td {
+  background-color: white;
+}
+
+#credit-requests-table .btn {
+  margin-right: 0.5rem;
+}
+
+/* Analytics chart */
+#analytics-chart {
+  max-width: 100%;
+  margin: 0 auto;
+}
