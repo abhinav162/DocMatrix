@@ -1,7 +1,7 @@
-import { apiService } from './utils/api.js';
-import LoadingManager from './utils/loadingManager.js';
-import ErrorHandler from './utils/errorHandler.js';
-import Chart from 'chart.js/auto';
+import { apiService } from './api.js';
+import LoadingManager from './loadingManager.js';
+import ErrorHandler from './errorHandler.js';
+// import Chart from '../../../node_modules/chart.js/auto'; 
 
 /**
  * Admin Dashboard Module
@@ -33,13 +33,13 @@ class AdminDashboard {
     try {
       const [users, creditRequests, analytics] = await Promise.all([
         apiService.get('/admin/users'),
-        apiService.get('/admin/credit-requests'),
+        apiService.get('/admin/credits/requests'),
         apiService.get('/admin/analytics')
       ]);
 
       this.displayUsers(users);
       this.displayCreditRequests(creditRequests);
-      this.displayAnalytics(analytics);
+      // this.displayAnalytics(analytics);
     } catch (error) {
       console.error('Error fetching admin data:', error);
       ErrorHandler.showError('Failed to fetch admin data. Please try again later.', document.querySelector('main'), 0);
@@ -52,7 +52,7 @@ class AdminDashboard {
    */
   displayUsers(users) {
     this.userTable.innerHTML = '';
-    users.forEach(user => {
+    users?.users?.forEach(user => {
       const row = document.createElement('tr');
       row.innerHTML = `
         <td>${user.username}</td>
@@ -73,11 +73,20 @@ class AdminDashboard {
    */
   displayCreditRequests(creditRequests) {
     this.creditRequestsTable.innerHTML = '';
-    creditRequests.forEach(request => {
+
+    if (!creditRequests?.requests?.length) {
+      const row = document.createElement('tr');
+      row.innerHTML = '<td colspan="6">No credit requests found</td>';
+      this.creditRequestsTable.appendChild(row);
+      return;
+    }
+
+    creditRequests?.requests?.forEach(request => {
       const row = document.createElement('tr');
       row.innerHTML = `
+        <td>${request.user_id}</td>
         <td>${request.username}</td>
-        <td>${request.requestedAmount}</td>
+        <td>${request.requested_amount}</td>
         <td>${request.reason}</td>
         <td>${request.status}</td>
         <td>
@@ -93,27 +102,27 @@ class AdminDashboard {
    * Display analytics data in the chart
    * @param {Object} analytics - Analytics data
    */
-  displayAnalytics(analytics) {
-    new Chart(this.analyticsChart, {
-      type: 'bar',
-      data: {
-        labels: ['Total Users', 'Total Documents', 'Total Credit Requests', 'Total Document Scans'],
-        datasets: [{
-          label: 'Count',
-          data: [analytics.totalUsers, analytics.totalDocuments, analytics.totalCreditRequests, analytics.totalDocumentScans],
-          backgroundColor: ['#4CAF50', '#2196F3', '#FF9800', '#F44336']
-        }]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
-      }
-    });
-  }
+  // displayAnalytics(analytics) {
+  //   new Chart(this.analyticsChart, {
+  //     type: 'bar',
+  //     data: {
+  //       labels: ['Total Users', 'Total Documents', 'Total Credit Requests', 'Total Document Scans'],
+  //       datasets: [{
+  //         label: 'Count',
+  //         data: [analytics.totalUsers, analytics.totalDocuments, analytics.totalCreditRequests, analytics.totalDocumentScans],
+  //         backgroundColor: ['#4CAF50', '#2196F3', '#FF9800', '#F44336']
+  //       }]
+  //     },
+  //     options: {
+  //       responsive: true,
+  //       scales: {
+  //         y: {
+  //           beginAtZero: true
+  //         }
+  //       }
+  //     }
+  //   });
+  // }
 
   /**
    * Setup event listeners for user actions
@@ -152,7 +161,7 @@ class AdminDashboard {
    */
   async handleCreditRequestApproval(requestId) {
     try {
-      await apiService.post(`/admin/credit-requests/${requestId}/approve`);
+      await apiService.post(`/credits/approve/${requestId}`);
       await this.fetchAndDisplayAdminData();
     } catch (error) {
       console.error('Error approving credit request:', error);
@@ -166,7 +175,7 @@ class AdminDashboard {
    */
   async handleCreditRequestDenial(requestId) {
     try {
-      await apiService.post(`/admin/credit-requests/${requestId}/deny`);
+      await apiService.post(`/credits/deny/${requestId}`);
       await this.fetchAndDisplayAdminData();
     } catch (error) {
       console.error('Error denying credit request:', error);

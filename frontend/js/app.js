@@ -19,7 +19,7 @@ class App {
       '/pages/scan.html': () => this.initScanPage(),
       '/pages/scan-history.html': () => this.initScanHistoryPage(),
       '/pages/scan-results.html': () => this.initScanResultsPage(),
-      '/pages/admin-dashboard.html': () => this.initAdminDashboardPage(), // P22d4
+      '/pages/admin-dashboard.html': () => this.initAdminDashboardPage(),
     };
   }
 
@@ -155,7 +155,7 @@ class App {
    * Admin dashboard page initialization
    */
   initAdminDashboardPage() {
-    import('./admin-dashboard.js').then((module) => {
+    import('./utils/admin-dashboard.js').then((module) => {
       const adminDashboard = new module.default();
       adminDashboard.init().catch((error) => {
         console.error('Error during admin dashboard initialization:', error);

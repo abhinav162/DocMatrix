@@ -159,7 +159,7 @@ class CreditRequestDAO implements BaseDAO<CreditRequest, CreditRequestCreationPa
     try {
       const db = await DBConnection.getConnection();
       return await db.all<CreditRequest[]>(
-        "SELECT * FROM credit_requests WHERE status = 'pending' ORDER BY timestamp ASC"
+        "SELECT users.username, credit_requests.* FROM credit_requests join users on credit_requests.user_id = users.id WHERE credit_requests.status = 'pending' ORDER BY credit_requests.timestamp ASC"
       );
     } catch (error) {
       console.error('Error finding pending credit requests:', error);
