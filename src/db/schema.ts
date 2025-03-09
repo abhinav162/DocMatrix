@@ -71,9 +71,6 @@ export async function initializeSchema(): Promise<void> {
 
     const tables = await db.all("SELECT name FROM sqlite_master WHERE type='table'");
     console.log('Tables created:', tables.map(t => t.name));
-
-    const info = await db.get("PRAGMA database_info");
-    console.log('Database info:', info);
   } catch (error) {
     console.error('Error initializing database schema:', error);
     throw error;
