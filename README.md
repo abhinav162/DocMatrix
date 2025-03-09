@@ -6,11 +6,20 @@ A self-contained document scanning and matching system. It allows users to uploa
 
 ## Features
 
+- AI-powered document matching with Google Gemini (fallback to Levenshtein distance algorithms)
 - User authentication and role-based access control
 - Credit system with daily free scans and admin-managed additional credits
-- AI-powered document matching with Google Gemini (fallback to basic algorithms)
+- Automated credit reset at 11:59 PM
 - Smart analytics dashboard for admins
-- Email notifications for key events (e.g., new user registration, credit usage, credits request approval, etc.)
+- User activity summary (No of scans, documents uploaded)
+- Document management (upload, view, delete)
+- Multi-user support
+
+## Tech Stack
+
+- Backend: Node.js, Express, TypeScript
+- Frontend: HTML, CSS, JavaScript
+- Database: SQLite (Local) / SQLite Cloud
 
 ## Project Structure
 
