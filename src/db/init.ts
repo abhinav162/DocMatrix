@@ -6,6 +6,12 @@ import { initializeSchema } from './schema';
  */
 async function initDatabase() {
   try {
+    const dbType = process.env.DB_TYPE;
+    if (dbType !== 'LOCAL') {
+      console.error('DB_TYPE is not set to LOCAL, Using CLOUD DB');
+      process.exit(1);
+    }
+
     console.log('Initializing database schema...');
     await initializeSchema();
     console.log('Database schema initialized successfully!');
