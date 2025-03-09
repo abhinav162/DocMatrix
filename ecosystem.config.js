@@ -9,5 +9,11 @@ module.exports = {
         PORT: 4000,
       },
     },
+    {
+        name: "cron",
+        script: "npm",
+        args: "run cron",
+        watch: false
+    }
   ],
 };
