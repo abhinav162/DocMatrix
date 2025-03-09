@@ -19,6 +19,7 @@ class App {
       '/pages/scan.html': () => this.initScanPage(),
       '/pages/scan-history.html': () => this.initScanHistoryPage(),
       '/pages/scan-results.html': () => this.initScanResultsPage(),
+      '/pages/admin-dashboard.html': () => this.initAdminDashboardPage(),
     };
   }
 
@@ -148,6 +149,20 @@ class App {
         }
       });
     }
+  }
+
+  /**
+   * Admin dashboard page initialization
+   */
+  initAdminDashboardPage() {
+    import('./utils/admin-dashboard.js').then((module) => {
+      const adminDashboard = new module.default();
+      adminDashboard.init().catch((error) => {
+        console.error('Error during admin dashboard initialization:', error);
+      });
+    }).catch((error) => {
+      console.error('Failed to load admin dashboard module:', error);
+    });
   }
 }
 

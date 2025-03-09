@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - DocMatrix</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/admin-dashboard.css">
+</head>
+<body>
+  <header>
+    <nav id="main-nav">
+      <!-- Navigation will be loaded dynamically -->
+    </nav>
+  </header>
+
+  <main>
+    <div id="loading-indicator" class="loading-indicator">
+      <div class="spinner"></div>
+    </div>
+
+    <section class="admin-dashboard container hidden">
+      <div class="dashboard-header">
+        <h1>Admin Dashboard</h1>
+        <p>Manage users, handle credit requests, and view system analytics</p>
+      </div>
+
+      <div class="dashboard-navigation">
+        <ul>
+          <li><a href="#overview">Overview</a></li>
+          <li><a href="#user-management">User Management</a></li>
+          <li><a href="#credit-requests">Credit Requests</a></li>
+          <li><a href="#analytics">Analytics</a></li>
+        </ul>
+      </div>
+
+      <div id="overview" class="dashboard-section">
+        <h2>Overview</h2>
+        <div class="overview-cards">
+          <div class="card">
+            <h3>Total Users</h3>
+            <p id="total-users">Loading...</p>
+          </div>
+          <div class="card">
+            <h3>Total Documents</h3>
+            <p id="total-documents">Loading...</p>
+          </div>
+          <div class="card">
+            <h3>Total Credit Requests</h3>
+            <p id="total-credit-requests">Loading...</p>
+          </div>
+          <div class="card">
+            <h3>Total Document Scans</h3>
+            <p id="total-document-scans">Loading...</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="user-management" class="dashboard-section">
+        <h2>User Management</h2>
+        <table id="user-table">
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- User rows will be populated by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+
+      <div id="credit-requests" class="dashboard-section">
+        <h2>Credit Requests</h2>
+        <table id="credit-requests-table">
+          <thead>
+            <tr>
+              <th>User ID</th>
+              <th>Username</th>
+              <th>Requested Amount</th>
+              <th>Reason</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Credit request rows will be populated by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+
+      <div id="analytics" class="dashboard-section">
+        <h2>Analytics</h2>
+        <canvas id="analytics-chart"></canvas>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2025 DocMatrix. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="../js/components/navigation.js" type="module"></script>
+  <script src="../js/utils/admin-dashboard.js" type="module"></script>
+</body>
+</html>
