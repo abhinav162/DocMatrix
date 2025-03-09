@@ -9,7 +9,7 @@ export async function checkAuth() {
     try {
       const isAuthenticated = await authService.checkAuthStatus();
       if (!isAuthenticated) {
-        // window.location.href = './login.html';
+        window.location.href = './login.html';
         return false;
       }
     } catch (error) {

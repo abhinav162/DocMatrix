@@ -21,6 +21,9 @@ export class AnalyticsService {
       
       // Get total number of credit requests
       const totalCreditRequests = await db.get<{ count: number }>('SELECT COUNT(*) as count FROM credit_requests');
+
+      // Get total number of pending credit requests
+      const totalPendingCreditRequests = await db.get<{ count: number }>('SELECT COUNT(*) as count FROM credit_requests WHERE status = "pending"');
       
       // Get total number of document scans
       const totalDocumentScans = await db.get<{ count: number }>('SELECT COUNT(*) as count FROM document_scans');
@@ -29,6 +32,7 @@ export class AnalyticsService {
         totalUsers: totalUsers?.count || 0,
         totalDocuments: totalDocuments?.count || 0,
         totalCreditRequests: totalCreditRequests?.count || 0,
+        pendingCreditRequests: totalPendingCreditRequests?.count || 0,
         totalDocumentScans: totalDocumentScans?.count || 0
       };
     } catch (error) {

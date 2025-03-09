@@ -1,4 +1,5 @@
 import { apiService } from './api.js';
+import { checkAdmin, checkAuth } from './authCheck.js';
 import ErrorHandler from './errorHandler.js';
 // import Chart from '../../../node_modules/chart.js/auto'; 
 
@@ -16,6 +17,7 @@ class AdminDashboard {
     this.overviewTotalDocuments = document.getElementById(`total-documents`);
     this.overviewTotalCreditRequests = document.getElementById(`total-credit-requests`);
     this.overviewTotalDocumentScans = document.getElementById(`total-document-scans`);
+    this.overviewTotalPendingCreditRequests = document.getElementById(`total-pending-credit-requests`);
   }
 
   /**
@@ -53,6 +55,8 @@ class AdminDashboard {
   async fetchAndDisplayAdminData() {
     try {
       this.showLoading(true);
+      await checkAuth();
+      await checkAdmin();
       const { users, creditRequests, analytics } = await this.makeAllAdminApiCalls();
 
       this.showLoading(false);
@@ -129,19 +133,20 @@ class AdminDashboard {
 
     analytics = analytics?.analytics || {};
 
-    this.overviewTotalUsers.textContent = analytics.totalUsers;
-    this.overviewTotalDocuments.textContent = analytics.totalDocuments;
-    this.overviewTotalCreditRequests.textContent = analytics.totalCreditRequests;
-    this.overviewTotalDocumentScans.textContent = analytics.totalDocumentScans;
+    this.overviewTotalUsers.textContent = analytics.totalUsers || 0;
+    this.overviewTotalDocuments.textContent = analytics.totalDocuments || 0;
+    this.overviewTotalCreditRequests.textContent = analytics.totalCreditRequests || 0;
+    this.overviewTotalDocumentScans.textContent = analytics.totalDocumentScans || 0;
+    this.overviewTotalPendingCreditRequests.textContent = analytics.totalPendingCreditRequests || 0;
     
     new Chart(this.analyticsChart, {
       type: 'bar',
       data: {
-        labels: ['Total Users', 'Total Documents', 'Total Credit Requests', 'Total Document Scans'],
+        labels: ['Total Users', 'Total Documents', 'Total Document Scans', 'Total Credit Requests', 'Total Pending Credit Requests'],
         datasets: [{
           label: 'Count',
-          data: [analytics.totalUsers, analytics.totalDocuments, analytics.totalCreditRequests, analytics.totalDocumentScans],
-          backgroundColor: ['#4CAF50', '#2196F3', '#FF9800', '#F44336']
+          data: [analytics.totalUsers, analytics.totalDocuments, analytics.totalDocumentScans, analytics.totalCreditRequests, analytics.totalPendingCreditRequests],
+          backgroundColor: ['#4CAF50', '#2196F3', '#FF9800', '#F44336', '#9C27B0']
         }]
       },
       options: {
