@@ -16,9 +16,9 @@ async function resetDailyCredits() {
   }
 }
 
-// Schedule a job to run every minute
-cron.schedule('* * * * *', () => {
-    console.log('Running a task every minute:', new Date().toLocaleString());
+// Schedule a job to run every day at midnight
+cron.schedule('0 0 * * *', () => {
+    console.log('Resetting daily credits:', new Date().toLocaleString());
     resetDailyCredits();
 });
 
