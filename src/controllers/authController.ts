@@ -205,8 +205,6 @@ export class AuthController {
       // req.user is set by the auth middleware
       const userId = req.session?.userId;
 
-      console.log("session profile", req.session);
-
       if (!userId) {
         res.status(401).json({
           message: 'Not authenticated'
