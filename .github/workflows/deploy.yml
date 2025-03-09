@@ -21,10 +21,12 @@ jobs:
     - name: Deploy to GCP VM
       run: |
         ssh -o StrictHostKeyChecking=no -i private_key.pem apple@34.32.86.199 << 'EOF'
-        source ~/.bashrc
+        export NVM_DIR="$HOME/.nvm"
+        source $NVM_DIR/nvm.sh
+        nvm use 22
         cd DocMatrix
         git pull origin main
-        /home/apple/.nvm/versions/node/v22.14.0/bin/npm install
-        /home/apple/.nvm/versions/node/v22.14.0/bin/npm run build
-        /home/apple/.nvm/versions/node/v22.14.0/bin/pm2 restart docmatrix
+        npm install
+        npm run build
+        pm2 restart docmatrix
         EOF
