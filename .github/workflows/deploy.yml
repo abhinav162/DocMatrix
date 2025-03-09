@@ -19,8 +19,11 @@ jobs:
         chmod 600 private_key.pem
 
     - name: Deploy to GCP VM
+      env:
+        GCP_USER: ${{ secrets.GCP_USER }}
+        GCP_VM_IP: ${{ secrets.GCP_VM_IP }}
       run: |
-        ssh -o StrictHostKeyChecking=no -i private_key.pem apple@34.32.86.199 << 'EOF'
+        ssh -o StrictHostKeyChecking=no -i private_key.pem ${GCP_USER}@${GCP_VM_IP} << 'EOF'
         export NVM_DIR="$HOME/.nvm"
         source $NVM_DIR/nvm.sh
         nvm use 22
