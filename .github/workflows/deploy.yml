@@ -25,6 +25,7 @@ jobs:
         source $NVM_DIR/nvm.sh
         nvm use 22
         cd DocMatrix
+        git checkout main
         git pull origin main
         npm install
         npm run db:init
