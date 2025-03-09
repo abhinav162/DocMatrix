@@ -12,6 +12,10 @@ class AdminDashboard {
     this.analyticsChart = document.getElementById('analytics-chart').getContext('2d');
     this.adminDashboardContainer = document.querySelector('.admin-dashboard');
     this.loadingIndicator = document.getElementById('loading-indicator');
+    this.overviewTotalUsers = document.getElementById(`total-users`);
+    this.overviewTotalDocuments = document.getElementById(`total-documents`);
+    this.overviewTotalCreditRequests = document.getElementById(`total-credit-requests`);
+    this.overviewTotalDocumentScans = document.getElementById(`total-document-scans`);
   }
 
   /**
@@ -56,7 +60,7 @@ class AdminDashboard {
 
       this.displayUsers(users);
       this.displayCreditRequests(creditRequests);
-      // this.displayAnalytics(analytics);
+      this.displayAnalytics(analytics);
     } catch (error) {
       console.error('Error fetching admin data:', error);
       ErrorHandler.showError('Failed to fetch admin data. Please try again later.', document.querySelector('main'), 0);
@@ -73,7 +77,7 @@ class AdminDashboard {
       const row = document.createElement('tr');
       row.innerHTML = `
         <td>${user.username}</td>
-        <td>${user.email}</td>
+        <!-- <td>${user.email}</td> -->
         <td>${user.role}</td>
         <td>
           <button class="btn primary small" data-action="edit" data-user-id="${user.id}">Edit</button>
@@ -120,27 +124,36 @@ class AdminDashboard {
    * Display analytics data in the chart
    * @param {Object} analytics - Analytics data
    */
-  // displayAnalytics(analytics) {
-  //   new Chart(this.analyticsChart, {
-  //     type: 'bar',
-  //     data: {
-  //       labels: ['Total Users', 'Total Documents', 'Total Credit Requests', 'Total Document Scans'],
-  //       datasets: [{
-  //         label: 'Count',
-  //         data: [analytics.totalUsers, analytics.totalDocuments, analytics.totalCreditRequests, analytics.totalDocumentScans],
-  //         backgroundColor: ['#4CAF50', '#2196F3', '#FF9800', '#F44336']
-  //       }]
-  //     },
-  //     options: {
-  //       responsive: true,
-  //       scales: {
-  //         y: {
-  //           beginAtZero: true
-  //         }
-  //       }
-  //     }
-  //   });
-  // }
+  displayAnalytics(analytics) {
+    console.log('Analytics data:', analytics);
+
+    analytics = analytics?.analytics || {};
+
+    this.overviewTotalUsers.textContent = analytics.totalUsers;
+    this.overviewTotalDocuments.textContent = analytics.totalDocuments;
+    this.overviewTotalCreditRequests.textContent = analytics.totalCreditRequests;
+    this.overviewTotalDocumentScans.textContent = analytics.totalDocumentScans;
+    
+    new Chart(this.analyticsChart, {
+      type: 'bar',
+      data: {
+        labels: ['Total Users', 'Total Documents', 'Total Credit Requests', 'Total Document Scans'],
+        datasets: [{
+          label: 'Count',
+          data: [analytics.totalUsers, analytics.totalDocuments, analytics.totalCreditRequests, analytics.totalDocumentScans],
+          backgroundColor: ['#4CAF50', '#2196F3', '#FF9800', '#F44336']
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  }
 
   /**
    * Setup event listeners for user actions
