@@ -23,5 +23,7 @@ jobs:
         ssh -o StrictHostKeyChecking=no -i private_key.pem apple@34.32.86.199 << 'EOF'
         cd DocMatrix
         git pull origin main
-        bash deploy.sh
+        npm install
+        npm run build
+        pm2 restart docmatrix
         EOF
