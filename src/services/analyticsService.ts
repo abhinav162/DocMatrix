@@ -32,7 +32,7 @@ export class AnalyticsService {
         totalUsers: totalUsers?.count || 0,
         totalDocuments: totalDocuments?.count || 0,
         totalCreditRequests: totalCreditRequests?.count || 0,
-        pendingCreditRequests: totalPendingCreditRequests?.count || 0,
+        totalPendingCreditRequests: totalPendingCreditRequests?.count || 0,
         totalDocumentScans: totalDocumentScans?.count || 0
       };
     } catch (error) {
