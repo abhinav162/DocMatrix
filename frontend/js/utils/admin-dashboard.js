@@ -75,7 +75,7 @@ class AdminDashboard {
       this.displayAnalytics(analytics);
     } catch (error) {
       console.error('Error fetching admin data:', error);
-      ErrorHandler.showError('Failed to fetch admin data. Please try again later.', document.querySelector('main'), 0);
+      ErrorHandler.showError('Failed to fetch admin data. Please try again later.222', document.querySelector('main'), 0);
     }
   }
 
@@ -93,7 +93,7 @@ class AdminDashboard {
         <td>${user.role}</td>
         <td>
           <button class="btn primary small" data-action="edit" data-user-id="${user.id}" data-username="${user.username}" data-role="${user.role}">Edit</button>
-          <button class="btn danger small" data-action="delete" data-user-id="${user.id}">Delete</button>
+          <!-- <button class="btn danger small" data-action="delete" data-user-id="${user.id}">Delete</button> -->
         </td>
       `;
       this.userTable.appendChild(row);
@@ -136,8 +136,6 @@ class AdminDashboard {
    * @param {Object} analytics - Analytics data
    */
   displayAnalytics(analytics) {
-    console.log('Analytics data:', analytics);
-
     analytics = analytics?.analytics || {};
 
     this.overviewTotalUsers.textContent = analytics.totalUsers || 0;
@@ -146,7 +144,13 @@ class AdminDashboard {
     this.overviewTotalDocumentScans.textContent = analytics.totalDocumentScans || 0;
     this.overviewTotalPendingCreditRequests.textContent = analytics.totalPendingCreditRequests || 0;
     
-    new Chart(this.analyticsChart, {
+    // Destroy the existing chart instance if it exists
+    if (this.chartInstance) {
+        this.chartInstance.destroy();
+    }
+
+    // Create new chart instance and store it
+    this.chartInstance = new Chart(this.analyticsChart, {
       type: 'bar',
       data: {
         labels: ['Total Users', 'Total Documents', 'Total Document Scans', 'Total Credit Requests', 'Total Pending Credit Requests'],
@@ -213,7 +217,6 @@ class AdminDashboard {
       const role = this.editUserRole.value;
       if (target.tagName === 'BUTTON') {
         const action = target.getAttribute('data-action');
-        console.log('Edit user action:', action);
         if (action === 'update') {
           this.handleUpdateUser(userId, username, role);
         } else if (action === 'cancel') {
@@ -230,7 +233,6 @@ class AdminDashboard {
    * @param {string} role - Role
    */
   async handleUpdateUser(userId, username, role) {
-    console.log('Update user:', userId, username, role);
     try {
       await apiService.patch(`/admin/users/${userId}/role`, { role: role });
       await this.fetchAndDisplayAdminData();
@@ -246,7 +248,6 @@ class AdminDashboard {
    * @param {number} userId - User ID
    */
   async handleEditUser(userId, username, role) {
-    console.log('Edit user:', userId);
     this.showEditUserModal(userId, username, role);
   }
 
