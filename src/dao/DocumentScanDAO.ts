@@ -21,6 +21,24 @@ class DocumentScanDAO implements BaseDAO<DocumentScan, DocumentScanCreationParam
   }
 
   /**
+   * Find document scans by user ID
+   * @param userId User ID
+   * @returns Array of document scans
+   */
+  async findByUserId(userId: number): Promise<DocumentScan[]> {
+    try {
+      const db = await DBConnection.getConnection();
+      return await db.all<DocumentScan[]>(
+        'SELECT * FROM document_scans WHERE user_id = ?',
+        userId
+      );
+    } catch (error) {
+      console.error('Error finding document scans by user ID:', error);
+      throw error;
+    }
+  }
+
+  /**
    * Create a new document scan
    * @param params DocumentScan creation parameters
    * @returns Created document scan
@@ -30,12 +48,13 @@ class DocumentScanDAO implements BaseDAO<DocumentScan, DocumentScanCreationParam
       const db = await DBConnection.getConnection();
       const result = await db.run(
         `INSERT INTO document_scans 
-         (source_document_id, matched_document_id, similarity_score, algorithm_used) 
-         VALUES (?, ?, ?, ?)`,
+         (source_document_id, matched_document_id, similarity_score, algorithm_used, user_id) 
+         VALUES (?, ?, ?, ?, ?)`,
         params.source_document_id,
         params.matched_document_id,
         params.similarity_score,
-        params.algorithm_used
+        params.algorithm_used,
+        params.user_id
       );
 
       const scan = await this.findById(result.lastID!);

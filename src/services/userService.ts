@@ -1,6 +1,8 @@
 import { User, UserCreationParams } from '../models/User';
 import { PasswordUtil } from '../utils/password';
 import UserDAO from '../dao/UserDAO';
+import DocumentDAO from '../dao/DocumentDAO';
+import DocumentScanDAO from '../dao/DocumentScanDAO';
 
 /**
  * Service for user-related operations
@@ -154,6 +156,26 @@ export class UserService {
       return userWithoutSensitiveFields;
     } catch (error) {
       console.error('Error updating user role:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Get activity summary for a user
+   * @param userId User ID
+   * @returns Activity summary
+   */
+  public static async getActivitySummary(userId: number): Promise<Object> {
+    try {
+      const documentsUploaded = await DocumentDAO.findByUserId(userId);
+      const scansPerformed = await DocumentScanDAO.findByUserId(userId);
+
+      return {
+        totalDocumentsUploaded: documentsUploaded?.length || 0,
+        totalScansPerformed: scansPerformed?.length || 0
+      }
+    } catch (error) {
+      console.error('Error getting activity summary:', error);
       throw error;
     }
   }

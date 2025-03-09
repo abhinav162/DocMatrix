@@ -185,6 +185,25 @@ class UserDAO implements BaseDAO<User, UserCreationParams, UserUpdateParams> {
       throw error;
     }
   }
+
+  /**
+   * Get activity summary for a user
+   * @param userId User ID
+   * @returns Activity summary
+   */
+  async getActivitySummary(userId: number): Promise<Object> {
+    try {
+      const db = await DBConnection.getConnection();
+      const activitySummary = await db.get<Object>(
+        'SELECT * FROM users WHERE id = ?',
+        userId
+      );
+      return activitySummary || {};
+    } catch (error) {
+      console.error('Error getting activity summary:', error);
+      throw error;
+    }
+  }
 }
 
 export default new UserDAO();

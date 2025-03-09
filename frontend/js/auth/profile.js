@@ -74,12 +74,16 @@ async function loadUserProfile() {
     const profile = await authService.getProfile();
     
     // Update user info
-    document.getElementById('username').textContent = profile.username;
-    document.getElementById('role').textContent = profile.role === 'admin' ? 'Administrator' : 'Regular User';
+    document.getElementById('username').textContent = profile.user.username;
+    document.getElementById('role').textContent = profile.user.role === 'admin' ? 'Administrator' : 'Regular User';
+
+    // Update Activity summery
+    document.getElementById('docs-uploaded').textContent = profile.activitySummary.totalDocumentsUploaded;
+    document.getElementById('scans-performed').textContent = profile.activitySummary.totalScansPerformed;
     
     // Format created_at date if available
-    if (profile.created_at) {
-      const date = new Date(profile.created_at);
+    if (profile.user.created_at) {
+      const date = new Date(profile.user.created_at);
       document.getElementById('created-at').textContent = date.toLocaleDateString();
     } else {
       document.getElementById('created-at').textContent = 'N/A';

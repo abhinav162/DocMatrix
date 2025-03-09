@@ -118,7 +118,7 @@ class AuthService {
 
     try {
       const response = await apiService.get('/auth/profile');
-      return response.user;
+      return response;
     } catch (error) {
       console.error('Error fetching profile:', error);
       throw error;

@@ -214,6 +214,9 @@ export class AuthController {
 
       const user = await UserService.getUserById(userId);
 
+      // Get activity summary
+      const activitySummary = await UserService.getActivitySummary(userId);
+
       if (!user) {
         if (req.session) {
           req.session.destroy(() => { });
@@ -225,7 +228,8 @@ export class AuthController {
       }
 
       res.status(200).json({
-        user
+        user,
+        activitySummary
       });
     } catch (error) {
       console.error('Error in profile:', error);

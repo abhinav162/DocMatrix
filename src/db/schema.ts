@@ -57,13 +57,15 @@ export async function initializeSchema(): Promise<void> {
     await db.exec(`
       CREATE TABLE IF NOT EXISTS document_scans (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
         source_document_id INTEGER NOT NULL,
         matched_document_id INTEGER NOT NULL,
         similarity_score REAL NOT NULL,
         scan_date TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
         algorithm_used TEXT NOT NULL,
         FOREIGN KEY (source_document_id) REFERENCES documents(id) ON DELETE CASCADE,
-        FOREIGN KEY (matched_document_id) REFERENCES documents(id) ON DELETE CASCADE
+        FOREIGN KEY (matched_document_id) REFERENCES documents(id) ON DELETE CASCADE,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
       )
     `);
 

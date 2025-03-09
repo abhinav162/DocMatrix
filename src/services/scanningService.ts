@@ -49,6 +49,7 @@ export class ScanningService {
 
       if (documentsToCompare.length === 0) {
         return {
+          user_id: userId,
           sourceDocumentId: sourceDocument.id!,
           sourceDocumentTitle: sourceDocument.title,
           matches: [],
@@ -96,6 +97,7 @@ export class ScanningService {
         // Store scan result if similarity is above threshold
         if (similarityScore >= minSimilarityThreshold) {
           matches.push({
+            user_id: userId,
             documentId: doc.id!,
             title: doc.title,
             similarityScore,
@@ -104,6 +106,7 @@ export class ScanningService {
 
           // Create a scan record for the database
           scanRecords.push({
+            user_id: userId,
             source_document_id: sourceDocument.id!,
             matched_document_id: doc.id!,
             similarity_score: similarityScore,
@@ -123,6 +126,7 @@ export class ScanningService {
       return {
         sourceDocumentId: sourceDocument.id!,
         sourceDocumentTitle: sourceDocument.title,
+        user_id: userId,
         matches,
         scanDate: new Date().toISOString(),
         algorithm: scanRecords.length > 0 && scanRecords[0].algorithm_used
@@ -166,6 +170,7 @@ export class ScanningService {
 
       if (scanRecords.length === 0) {
         return {
+          user_id: userId,
           sourceDocumentId: sourceDocument.id!,
           sourceDocumentTitle: sourceDocument.title,
           matches: [],
@@ -203,6 +208,7 @@ export class ScanningService {
       matches.sort((a, b) => b.similarityScore - a.similarityScore);
 
       return {
+        user_id: userId,
         sourceDocumentId: sourceDocument.id!,
         sourceDocumentTitle: sourceDocument.title,
         matches,

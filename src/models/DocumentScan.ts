@@ -1,5 +1,6 @@
 export interface DocumentScan {
   id?: number;
+  user_id: number;
   source_document_id: number;
   matched_document_id: number;
   similarity_score: number;
@@ -11,6 +12,7 @@ export type DocumentScanCreationParams = Omit<DocumentScan, 'id' | 'scan_date'>;
 export type DocumentScanUpdateParams = Partial<Omit<DocumentScan, 'id' | 'scan_date'>>;
 
 export interface ScanMatchResult {
+  user_id: number;
   documentId: number;
   title: string;
   similarityScore: number;
@@ -23,6 +25,7 @@ export interface ScanRequest {
 }
 
 export interface ScanResult {
+  user_id: number;
   sourceDocumentId: number;
   sourceDocumentTitle: string;
   matches: ScanMatchResult[];
