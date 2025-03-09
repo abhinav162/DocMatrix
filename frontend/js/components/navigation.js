@@ -96,6 +96,7 @@ function updateAuthUI(isAuthenticated, user) {
   const registerLink = document.querySelector('.register-link');
   const profileLink = document.querySelector('.profile-link');
   const logoutLink = document.querySelector('.logout-link');
+  const adminDashboardLink = document.querySelector('.admin-dashboard-link');
   
   if (loginLink && registerLink && profileLink && logoutLink) {
     if (isAuthenticated) {
@@ -108,6 +109,14 @@ function updateAuthUI(isAuthenticated, user) {
       registerLink.style.display = 'block';
       profileLink.style.display = 'none';
       logoutLink.style.display = 'none';
+    }
+  }
+
+  if (adminDashboardLink) {
+    if (user && user.role === 'admin') {
+      adminDashboardLink.style.display = 'block';
+    } else {
+      adminDashboardLink.style.display = 'none';
     }
   }
 }

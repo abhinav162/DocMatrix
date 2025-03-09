@@ -122,4 +122,39 @@ export class UserService {
       throw error;
     }
   }
+
+  /**
+   * List all users
+   * @returns Array of users (without sensitive fields)
+   */
+  public static async listAllUsers(): Promise<Omit<User, 'password_hash' | 'salt'>[]> {
+    try {
+      const users = await UserDAO.findAll();
+      return users.map(({ password_hash, salt, ...userWithoutSensitiveFields }) => userWithoutSensitiveFields);
+    } catch (error) {
+      console.error('Error listing all users:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Update user role
+   * @param userId User ID
+   * @param role New role
+   * @returns Updated user (without sensitive fields)
+   */
+  public static async updateUserRole(userId: number, role: 'user' | 'admin'): Promise<Omit<User, 'password_hash' | 'salt'>> {
+    try {
+      const updatedUser = await UserDAO.update(userId, { role });
+      if (!updatedUser) {
+        throw new Error('User not found');
+      }
+
+      const { password_hash, salt, ...userWithoutSensitiveFields } = updatedUser;
+      return userWithoutSensitiveFields;
+    } catch (error) {
+      console.error('Error updating user role:', error);
+      throw error;
+    }
+  }
 }

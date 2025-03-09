@@ -269,6 +269,32 @@ export class CreditService {
   }
 
   /**
+   * Adjust user credits (admin function)
+   * @param userId User ID
+   * @param amount Number of credits to adjust
+   * @returns Updated user
+   */
+  public static async adjustUserCredits(userId: number, amount: number): Promise<User> {
+    try {
+      const user = await UserDAO.findById(userId);
+      if (!user) {
+        throw new Error('User not found');
+      }
+
+      const newCreditsUsed = Math.max(0, user.daily_credits_used + amount);
+
+      const updatedUser = await UserDAO.update(userId, {
+        daily_credits_used: newCreditsUsed
+      });
+
+      return updatedUser!;
+    } catch (error) {
+      console.error('Error adjusting user credits:', error);
+      throw error;
+    }
+  }
+
+  /**
    * Reset daily credits for all users
    * Meant to be called by a scheduled job at midnight
    * @returns Number of users updated

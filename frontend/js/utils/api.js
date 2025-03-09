@@ -3,8 +3,8 @@
  */
 class ApiService {
   constructor() {
-    this.baseUrl = 'https://docmatrix.zapto.org/api';
-    // this.baseUrl = '/api';
+    // this.baseUrl = 'https://docmatrix.zapto.org/api';
+    this.baseUrl = '/api';
     this.headers = {
       'Content-Type': 'application/json'
     };
