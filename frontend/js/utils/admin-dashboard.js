@@ -18,6 +18,14 @@ class AdminDashboard {
     this.overviewTotalCreditRequests = document.getElementById(`total-credit-requests`);
     this.overviewTotalDocumentScans = document.getElementById(`total-document-scans`);
     this.overviewTotalPendingCreditRequests = document.getElementById(`total-pending-credit-requests`);
+    this.editUserModal = document.getElementById('edit-user-modal');
+    this.editUserForm = document.getElementById('edit-user-form');
+    this.editUserUsername = document.getElementById('username');
+    this.editUserId = document.getElementById('user-id');
+    this.editUserRole = document.getElementById('role');
+    this.closeModalBtn = document.querySelector('.close-modal');
+    this.cancelEditBtn = document.getElementById('cancel-edit-btn');
+    this.confirmEditBtn = document.getElementById('confirm-edit-btn');
   }
 
   /**
@@ -84,7 +92,7 @@ class AdminDashboard {
         <!-- <td>${user.email}</td> -->
         <td>${user.role}</td>
         <td>
-          <button class="btn primary small" data-action="edit" data-user-id="${user.id}">Edit</button>
+          <button class="btn primary small" data-action="edit" data-user-id="${user.id}" data-username="${user.username}" data-role="${user.role}">Edit</button>
           <button class="btn danger small" data-action="delete" data-user-id="${user.id}">Delete</button>
         </td>
       `;
@@ -123,7 +131,6 @@ class AdminDashboard {
     });
   }
 
-  // TODO: Implement analytics chart and chart library imports
   /**
    * Display analytics data in the chart
    * @param {Object} analytics - Analytics data
@@ -164,13 +171,21 @@ class AdminDashboard {
    * Setup event listeners for user actions
    */
   setupEventListeners() {
+    this.closeModalBtn.addEventListener('click', () => {
+      this.hideEditUserModal();
+    });
+    
     this.userTable.addEventListener('click', async (event) => {
       const target = event.target;
       if (target.tagName === 'BUTTON') {
         const userId = target.getAttribute('data-user-id');
+        const username = target.getAttribute('data-username');
+        const role = target.getAttribute('data-role');
         const action = target.getAttribute('data-action');
         if (action === 'edit') {
-          await this.handleEditUser(userId);
+          await this.handleEditUser(userId, username, role);
+        } else if (action === 'delete') {
+          await this.handleDeleteUser(userId);
         } else if (action === 'delete') {
           await this.handleDeleteUser(userId);
         }
@@ -189,15 +204,50 @@ class AdminDashboard {
         }
       }
     });
+
+    this.editUserModal.addEventListener('click', (event) => {
+      event.preventDefault();
+      const target = event.target;
+      const userId = this.editUserId.value;
+      const username = this.editUserUsername.value;
+      const role = this.editUserRole.value;
+      if (target.tagName === 'BUTTON') {
+        const action = target.getAttribute('data-action');
+        console.log('Edit user action:', action);
+        if (action === 'update') {
+          this.handleUpdateUser(userId, username, role);
+        } else if (action === 'cancel') {
+          this.hideEditUserModal();
+        }
+      }
+    });
+  }
+
+  /**
+   * Handle update user
+   * @param {number} userId - User ID
+   * @param {string} username - Username
+   * @param {string} role - Role
+   */
+  async handleUpdateUser(userId, username, role) {
+    console.log('Update user:', userId, username, role);
+    try {
+      await apiService.patch(`/admin/users/${userId}/role`, { role: role });
+      await this.fetchAndDisplayAdminData();
+      this.hideEditUserModal();
+    } catch (error) {
+      console.error('Error updating user:', error);
+      ErrorHandler.showError('Failed to update user. Please try again later.', document.querySelector('main'), 0);
+    }
   }
 
   /**
    * Handle edit user
    * @param {number} userId - User ID
    */
-  async handleEditUser(userId) {
+  async handleEditUser(userId, username, role) {
     console.log('Edit user:', userId);
-    // Implement edit user functionality
+    this.showEditUserModal(userId, username, role);
   }
 
   /**
@@ -243,6 +293,24 @@ class AdminDashboard {
    */
   showLoading(show) {
     this.loadingIndicator.style.display = show ? 'flex' : 'none';
+  }
+
+  /**
+   * Show edit user modal
+   * @param {number} userId - User ID
+   */
+  showEditUserModal(userId, username, role) {
+    this.editUserModal.style.display = 'flex';
+    this.editUserUsername.value = username;
+    this.editUserRole.value = role;
+    this.editUserId.value = userId;
+  }
+
+  /**
+   * Hide edit user modal
+   */
+  hideEditUserModal() {
+    this.editUserModal.style.display = 'none';
   }
 
   /**

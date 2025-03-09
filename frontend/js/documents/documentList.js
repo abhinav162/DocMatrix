@@ -316,7 +316,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     documentToDelete = id;
     
     // Show the modal
-    deleteModal.style.display = 'block';
+    deleteModal.style.display = 'flex';
   }
   
   /**

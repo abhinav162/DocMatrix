@@ -101,6 +101,28 @@
   margin-right: 0.5rem;
 }
 
+/* Edit user modal */
+#edit-user-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#edit-user-form #user-id {
+  width: 100%;
+  padding: 0.5rem;
+}
+
+#edit-user-form #username {
+  width: 100%;
+  padding: 0.5rem;
+}
+
+#edit-user-form #role {
+  width: 100%;
+  padding: 0.5rem;
+}
+
 /* Credit requests table */
 #credit-requests-table {
   width: 100%;
