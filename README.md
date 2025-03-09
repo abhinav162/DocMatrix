@@ -33,11 +33,12 @@ DocMatrix/
 1. Navigate to the project directory: `cd /`
 2. Install dependencies: `npm install`
 3. Set up the environment variables: `cp .env.example .env`
-4. Set up the database connection type and connection string in `.env`:
+4. Set `GEMINI_API_KEY` in `.env` file. You can get it from [Google Gemini](https://aistudio.google.com/apikey).
+5. Set up the database connection type and connection string in `.env`:
    - For local database: `DB_TYPE=LOCAL`
    - For cloud database: `DB_TYPE=CLOUD` and set up the `SQLITE_CLOUD_URI` ([Get cloud databse url from here](https://sqlitecloud.io/)). 
-5. Initialize the database: `npm run db:init`
-6. Start the development server: `npm run dev`
+6. Initialize the database: `npm run db:init`
+7. Start the development server: `npm run dev`
 7. Open `http://localhost:4000` in your browser to access the application
 
 
