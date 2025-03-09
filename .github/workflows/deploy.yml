@@ -21,6 +21,7 @@ jobs:
     - name: Deploy to GCP VM
       run: |
         ssh -o StrictHostKeyChecking=no -i private_key.pem apple@34.32.86.199 << 'EOF'
+        source ~/.bashrc
         cd DocMatrix
         git pull origin main
         /home/apple/.nvm/versions/node/v22.14.0/bin/npm install
