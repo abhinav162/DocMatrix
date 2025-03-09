@@ -1,0 +1,27 @@
+name: Auto-Deploy to GCP VM
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup SSH
+      run: |
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
+        chmod 600 private_key.pem
+
+    - name: Deploy to GCP VM
+      run: |
+        ssh -o StrictHostKeyChecking=no -i private_key.pem apple@34.32.86.199 << 'EOF'
+        cd DocMatrix
+        git pull origin main
+        bash ./deploy.sh
+        EOF
