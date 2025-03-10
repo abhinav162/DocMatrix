@@ -71,13 +71,13 @@ class ScanService {
   
   /**
    * Export scan results
-   * @param {number} documentId - Document ID
-   * @param {string} format - Export format ('pdf' or 'csv')
+   * @param {number} sourceDocumentId - Document ID
+   * @param {number} threshold - Minimum similarity threshold (0-100)
    * @returns {Promise<Blob>} Export data as blob
    */
-  async exportScanResults(documentId, format = 'csv') {
+  async exportScanResults(sourceDocumentId, threshold) {
     try {
-      const response = await fetch(`${apiService.baseUrl}/scan/export/${documentId}?format=${format}`, {
+      const response = await fetch(`${apiService.baseUrl}/scan/export/${sourceDocumentId}?threshold=${threshold}`, {
         method: 'GET',
         headers: {
           // Don't set Content-Type header for blob response

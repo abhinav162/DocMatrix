@@ -14,6 +14,7 @@ A self-contained document scanning and matching system. It allows users to uploa
 - User activity summary (No of scans, documents uploaded)
 - Document management (upload, view, delete)
 - Multi-user support
+- Export scan results
 
 ## Tech Stack
 

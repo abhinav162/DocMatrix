@@ -385,13 +385,15 @@ document.addEventListener('DOMContentLoaded', async () => {
       showInfo('Exporting scan results...');
       
       // Export as CSV
-      const blob = await scanService.exportScanResults(selectedDocumentId, 'csv');
+      const blob = await scanService.exportScanResults(selectedDocumentId, scanResultData.scannedThreshold);
+
+      console.log(blob);
       
       // Create download link
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `scan_results_${selectedDocumentId}.csv`;
+      a.download = `scan_results_${selectedDocumentId}.txt`;
       document.body.appendChild(a);
       a.click();
       

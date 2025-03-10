@@ -15,6 +15,7 @@ export interface ScanMatchResult {
   user_id: number;
   documentId: number;
   title: string;
+  content: string;
   similarityScore: number;
   isUserDocument: boolean;
 }
@@ -28,6 +29,7 @@ export interface ScanResult {
   user_id: number;
   sourceDocumentId: number;
   sourceDocumentTitle: string;
+  scannedThreshold: number;
   matches: ScanMatchResult[];
   scanDate: string;
   algorithm: string;

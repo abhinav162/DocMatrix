@@ -6,3 +6,4 @@ dist/
 *.sqlite
 /documents
 package-lock.json
+/src/exports

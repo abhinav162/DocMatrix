@@ -39,6 +39,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   let scanId = null;
   let sourceDocumentId = null;
   let scanResultData = null;
+  let scannedThreshold = null;
   
   // Initialize
   init();
@@ -90,6 +91,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       
       // Set source document ID
       sourceDocumentId = scanResultData.sourceDocumentId;
+      scannedThreshold = scanResultData.scannedThreshold || 70;
       
       // Populate results
       populateScanResults(scanResultData);
@@ -263,13 +265,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       showInfo('Exporting scan results...');
       
       // Export as CSV
-      const blob = await scanService.exportScanResults(sourceDocumentId, 'csv');
+      const blob = await scanService.exportScanResults(sourceDocumentId, scannedThreshold);
       
       // Create download link
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `scan_results_${sourceDocumentId}.csv`;
+      a.download = `scan_results_${sourceDocumentId}.txt`;
       document.body.appendChild(a);
       a.click();
       

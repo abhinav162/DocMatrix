@@ -178,7 +178,7 @@ class CreditRequestDAO implements BaseDAO<CreditRequest, CreditRequestCreationPa
         'SELECT * FROM credit_requests WHERE user_id = ? AND status = "approved" AND date(timestamp) = date("now")',
         userId
       );
-      if (requests.length > 1) {
+      if (requests.length > 2) {
         throw new Error('Multiple approved requests found for the same user');
       }
       return requests || null;

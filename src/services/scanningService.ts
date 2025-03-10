@@ -51,6 +51,7 @@ export class ScanningService {
         return {
           user_id: userId,
           sourceDocumentId: sourceDocument.id!,
+          scannedThreshold: minSimilarityThreshold,
           sourceDocumentTitle: sourceDocument.title,
           matches: [],
           scanDate: new Date().toISOString(),
@@ -100,6 +101,7 @@ export class ScanningService {
             user_id: userId,
             documentId: doc.id!,
             title: doc.title,
+            content: doc.content,
             similarityScore,
             isUserDocument: doc.user_id === userId,
           });
@@ -126,6 +128,7 @@ export class ScanningService {
       return {
         sourceDocumentId: sourceDocument.id!,
         sourceDocumentTitle: sourceDocument.title,
+        scannedThreshold: minSimilarityThreshold,
         user_id: userId,
         matches,
         scanDate: new Date().toISOString(),
@@ -173,6 +176,7 @@ export class ScanningService {
           user_id: userId,
           sourceDocumentId: sourceDocument.id!,
           sourceDocumentTitle: sourceDocument.title,
+          scannedThreshold: minSimilarityThreshold,
           matches: [],
           scanDate: new Date().toISOString(),
           algorithm: this.DEFAULT_ALGORITHM
@@ -198,6 +202,7 @@ export class ScanningService {
           return {
             documentId: scan.matched_document_id,
             title: matchedDoc.title,
+            content: matchedDoc.content,
             similarityScore: scan.similarity_score,
             isUserDocument: matchedDoc.user_id === userId
           };
@@ -211,6 +216,7 @@ export class ScanningService {
         user_id: userId,
         sourceDocumentId: sourceDocument.id!,
         sourceDocumentTitle: sourceDocument.title,
+        scannedThreshold: minSimilarityThreshold,
         matches,
         scanDate: scanRecords[0].scan_date || new Date().toISOString(),
         algorithm: scanRecords[0].algorithm_used
@@ -219,5 +225,19 @@ export class ScanningService {
       console.error('Error getting previous scan results:', error);
       throw error;
     }
+  }
+
+  /**
+   * Export scan results
+   * @param userId User ID
+   * @param documentId Document ID
+   * @returns Exported scan results
+   */
+  public static async exportScanResults(
+    userId: number,
+    documentId: number,
+    minSimilarityThreshold: number
+  ): Promise<ScanResult> {
+    return this.getPreviousScanResults(userId, documentId, minSimilarityThreshold);
   }
 }

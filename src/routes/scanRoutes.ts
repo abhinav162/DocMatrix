@@ -26,4 +26,15 @@ router.get(
   ScanController.getPreviousScanResults
 );
 
+/**
+ * @route GET /export/:sourceDocumentId
+ * @description Export scan results
+ * @access Private
+ */
+router.get(
+  '/export/:sourceDocumentId',
+  AuthMiddleware.isAuthenticated,
+  ScanController.exportScanResults
+);
+
 export default router;

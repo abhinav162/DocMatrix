@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import { ScanningService } from '../services/scanningService';
 import { CreditService } from '../services/creditService';
+import path from 'path';
+import fs from 'fs';
 
 /**
  * Controller for document scanning endpoints
@@ -151,6 +153,79 @@ export class ScanController {
       } else {
         res.status(500).json({
           message: 'An error occurred while retrieving scan results'
+        });
+      }
+    }
+  }
+
+  /**
+   * Export scan results
+   * @param req Request
+   * @param res Response
+   */
+  public static async exportScanResults(req: Request, res: Response): Promise<void> {
+    try {
+      // Ensure user is authenticated
+      if (!req.user || !req.user.id) {
+        res.status(401).json({
+          message: 'Authentication required'
+        });
+        return;
+      }
+
+      const sourceDocumentId = parseInt(req.params.sourceDocumentId);
+      const minSimilarityThreshold = parseFloat(req.query.threshold as string) || 70;
+      if (isNaN(sourceDocumentId)) {
+        res.status(400).json({
+          message: 'Invalid source document ID'
+        });
+        return;
+      }
+
+      // Exporting scan results doesn't cost credits
+
+      // Export scan results
+      const scanResults = await ScanningService.exportScanResults(
+        req.user.id,
+        sourceDocumentId,
+        minSimilarityThreshold
+      );
+
+      // Export scan results
+      const exportPath = path.join(__dirname, '..', 'exports');
+
+      fs.mkdirSync(exportPath, { recursive: true }); // Create export directory if it doesn't exist
+
+      // Check if file exists with name sourceDocumentId.txt
+      const exportFile = path.join(exportPath, `${sourceDocumentId}.txt`);
+      if (fs.existsSync(exportFile)) {
+        fs.unlinkSync(exportFile);
+      }
+
+      // Remove duplicate matches based on document ID
+      const uniqueMatches = scanResults.matches.filter((match, index, self) =>
+        index === self.findIndex(t => t.documentId === match.documentId)
+      );
+
+      uniqueMatches.forEach(match => {
+        fs.appendFileSync(exportFile, `Document ID: ${match.documentId}\nTitle: ${match.title}\nSimilarity Score: ${match.similarityScore}\nContent: ${match.content}\n\n---------\n`);
+      });
+
+      res.status(200).sendFile(exportFile);
+    } catch (error: any) {
+      console.error('Error in exportScanResults:', error);
+
+      if (error.message === 'Source document not found') {
+        res.status(404).json({
+          message: 'Document not found'
+        });
+      } else if (error.message === 'Access denied to source document') {
+        res.status(403).json({
+          message: 'Access denied to this document'
+        });
+      } else {
+        res.status(500).json({
+          message: 'An error occurred while exporting scan results'
         });
       }
     }
