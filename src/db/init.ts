@@ -15,9 +15,8 @@ export async function initDatabase() {
     console.log('Initializing database schema...');
     await initializeSchema();
     console.log('Database schema initialized successfully!');
-    process.exit(0);
   } catch (error) {
     console.error('Error initializing database:', error);
-    process.exit(1);
+    throw error;
   }
 }
