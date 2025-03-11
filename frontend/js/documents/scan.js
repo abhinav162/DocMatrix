@@ -1,4 +1,3 @@
-import { apiService } from '../utils/api.js';
 import { checkAuth } from '../utils/authCheck.js';
 import { documentService } from './documentService.js';
 import { scanService } from './scanService.js';

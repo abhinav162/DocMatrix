@@ -1,6 +1,5 @@
 import { apiService } from '../utils/api.js';
 import { checkAuth } from '../utils/authCheck.js';
-import { documentService } from './documentService.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   // Check if user is authenticated
