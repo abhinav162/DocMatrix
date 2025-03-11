@@ -7,6 +7,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import path from 'path';
+import SQLiteStore from 'connect-sqlite3';
 
 // Load environment variables
 dotenv.config();
@@ -19,9 +20,11 @@ import { initDatabase } from './db/init';
 // Initialize Express app
 const app: Express = express();
 const port = process.env.PORT || 4000;
+const SQLiteStoreInstance = SQLiteStore(session);
 
 // Session configuration
 app.use(session({
+  store: new SQLiteStoreInstance({ db: 'sessions.sqlite', dir: './data' }) as session.Store,
   secret: process.env.SESSION_SECRET || 'Secret_default',
   resave: false,
   saveUninitialized: false,
