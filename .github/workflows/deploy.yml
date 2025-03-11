@@ -31,7 +31,6 @@ jobs:
         git checkout main
         git pull origin main
         npm install
-        npm run db:init
         npm run build
         pm2 restart docmatrix
         EOF

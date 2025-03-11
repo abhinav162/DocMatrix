@@ -1,5 +1,7 @@
 {
-  "name": "document-scanner-backend",
+  "name": "docmatrix",
+  "author": "Abhinav Aditya <abhinavaditya162@gmail.com>",
+  "license": "MIT",
   "version": "1.0.0",
   "description": "Backend for Document Scanning and Matching System",
   "main": "dist/index.js",
@@ -9,8 +11,6 @@
     "dev": "nodemon --exec ts-node src/index.ts",
     "cron": "node dist/cron.js",
     "lint": "eslint . --ext .ts",
-    "db:init": "ts-node src/db/init.ts",
-    "fs:init": "ts-node src/utils/initFileSystem.ts",
     "credits:reset": "ts-node src/utils/resetDailyCredits.ts"
   },
   "dependencies": {

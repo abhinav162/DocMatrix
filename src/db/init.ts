@@ -4,7 +4,7 @@ import { initializeSchema } from './schema';
  * Initialize the database
  * This script is used to initialize the database schema
  */
-async function initDatabase() {
+export async function initDatabase() {
   try {
     const dbType = process.env.DB_TYPE;
     if (dbType !== 'LOCAL') {
@@ -21,6 +21,3 @@ async function initDatabase() {
     process.exit(1);
   }
 }
-
-// Run initialization
-initDatabase();

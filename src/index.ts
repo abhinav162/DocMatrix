@@ -14,10 +14,25 @@ dotenv.config();
 // Import routes
 import routes from './routes';
 import healthRouter from './routes/health';
+import { initDatabase } from './db/init';
 
 // Initialize Express app
 const app: Express = express();
 const port = process.env.PORT || 4000;
+
+// Session configuration
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'Secret_default',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000,
+    path: '/',
+    sameSite: 'lax', 
+    domain: process.env.NODE_ENV === 'production' ? 'docmatrix.zapto.org' : 'localhost'
+  }
+}));
 
 // Security middleware
 app.use(helmet());
@@ -38,26 +53,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// Session configuration
-app.use(session({
-  secret: process.env.SESSION_SECRET || 'default_secret_change_me',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    httpOnly: true,
-    maxAge: 24 * 60 * 60 * 1000,
-    path: '/',
-    sameSite: 'lax', 
-    domain: process.env.NODE_ENV === 'production' ? 'docmatrix.zapto.org' : 'localhost'
-  }
-}));
-
 // Serve static files from the frontend directory
 app.use(express.static(path.join(__dirname, '../frontend')));
 
 // Routes
 app.use('/api', routes);
 app.use('/api/health', healthRouter);
+
+// Initialize database
+initDatabase();
 
 // Error handling middleware
 app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
