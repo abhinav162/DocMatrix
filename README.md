@@ -69,10 +69,10 @@ DocMatrix/
 4. Go to [Scan](https://docmatrix.zapto.org/pages/scan.html) page, select any file from dropdown and click `Scan` button
 5. You will get the scan results
 
-<!-- ## API Documentation
+## Documentation
 
-- The API documentation is available at `/api-docs` when the server is running.
+- API Reference: [Postman API Reference](https://documenter.getpostman.com/view/36829320/2sAYk8u36Q)
 
 ## License
 
-All rights reserved. -->
+- MIT License

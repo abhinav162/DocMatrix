@@ -139,10 +139,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         <p>No documents found matching your filters.</p>
         <button id="clear-filters-btn" class="btn secondary">Clear Filters</button>
       `;
+
+      documentGrid.style.display = 'flex';
+      documentGrid.style.justifyContent = 'center';
       documentGrid.appendChild(noResults);
       
       document.getElementById('clear-filters-btn').addEventListener('click', clearFilters);
     } else {
+      documentGrid.style.display = 'grid';
+      
       // Create document cards
       filteredDocuments.forEach(doc => {
         const card = createDocumentCard(doc);
