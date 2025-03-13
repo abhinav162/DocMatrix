@@ -56,6 +56,7 @@ export function initDocumentViewer(options) {
       
       // Reset modal state
       contentElement.innerHTML = '';
+      contentElement.style.display = 'none';
       errorElement.style.display = 'none';
       loadingElement.style.display = 'flex';
       
@@ -75,6 +76,9 @@ export function initDocumentViewer(options) {
       
       // Hide loading indicator
       loadingElement.style.display = 'none';
+
+      // Set document content
+      contentElement.style.display = 'block';
       
       // Display document content
       if (documentData && documentData.content) {
