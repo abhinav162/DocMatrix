@@ -18,11 +18,24 @@ document.addEventListener('DOMContentLoaded', async () => {
   const sortOption = document.getElementById('sort-option');
   const statusMessage = document.getElementById('status-message');
   const documentCardTemplate = document.getElementById('document-card-template');
+
+  // Delete modal elements
   const deleteModal = document.getElementById('delete-confirmation-modal');
   const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
   const cancelDeleteBtn = document.getElementById('cancel-delete-btn');
-  const closeModalBtn = document.querySelector('.close-modal');
-  
+
+  // Document viewer modal elements
+  const viewerModal = document.getElementById('document-viewer-modal');
+  const viewerTitle = document.getElementById('document-viewer-title');
+  const viewerContent = document.getElementById('document-content');
+  const viewerLoading = document.getElementById('document-loading');
+  const viewerError = document.getElementById('document-error');
+  const closeViewerBtn = document.getElementById('close-viewer-btn');
+  const closeViewerModalBtn = document.getElementById('close-viewer-modal');
+
+  // Get all close modal buttons
+  const closeModalBtns = document.querySelectorAll('.close-modal');
+
   // State
   let documents = [];
   let filteredDocuments = [];
@@ -32,6 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     sort: 'newest'
   };
   let documentToDelete = null;
+  let currentViewingDocument = null;
   
   // Initialize
   loadDocuments();
@@ -47,15 +61,32 @@ document.addEventListener('DOMContentLoaded', async () => {
   visibilityFilter.addEventListener('change', filterDocuments);
   sortOption.addEventListener('change', filterDocuments);
   
-  // Modal event listeners
+  // Delete modal event listeners
   confirmDeleteBtn.addEventListener('click', confirmDelete);
-  cancelDeleteBtn.addEventListener('click', closeModal);
-  closeModalBtn.addEventListener('click', closeModal);
-  
-  // Close modal if clicking outside
+  cancelDeleteBtn.addEventListener('click', closeDeleteModal);
+
+  // Document viewer modal event listeners
+  closeViewerBtn.addEventListener('click', closeViewerModal);
+  closeViewerModalBtn.addEventListener('click', closeViewerModal);
+
+  // Add event listeners to all close modal buttons
+  closeModalBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      // Find the parent modal
+      const modal = e.target.closest('.modal');
+      if (modal) {
+        modal.style.display = 'none';
+      }
+    });
+  });
+
+  // Close modals if clicking outside
   window.addEventListener('click', (e) => {
     if (e.target === deleteModal) {
-      closeModal();
+      closeDeleteModal();
+    }
+    if (e.target === viewerModal) {
+      closeViewerModal();
     }
   });
   
@@ -247,10 +278,65 @@ document.addEventListener('DOMContentLoaded', async () => {
    * View document details
    * @param {number} id - Document ID
    */
-  function viewDocument(id) {
-    // TODO: Implement document viewer
-    console.log('View document:', id);
-    alert('Document viewer not implemented yet.');
+  async function viewDocument(id) {
+    try {
+      // Store current document ID
+      currentViewingDocument = id;
+
+      // Reset modal state
+      viewerContent.innerHTML = '';
+      viewerError.style.display = 'none';
+      viewerLoading.style.display = 'flex';
+
+      // Find document in our local data to get the title
+      const document = documents.find(doc => doc.id === id);
+      if (document) {
+        viewerTitle.textContent = document.title;
+      } else {
+        viewerTitle.textContent = 'Document';
+      }
+
+      // Show the modal
+      viewerModal.style.display = 'flex';
+
+      // Fetch document content
+      const documentData = await documentService.getDocumentDetails(id);
+
+      // Make sure we're still viewing the same document (user might have closed modal)
+      if (currentViewingDocument !== id) {
+        return;
+      }
+
+      // Hide loading indicator
+      viewerLoading.style.display = 'none';
+
+      // Display document content
+      if (documentData && documentData.content) {
+        // Escape HTML to prevent XSS
+        const safeContent = escapeHtml(documentData.content);
+        viewerContent.innerHTML = safeContent;
+      } else {
+        // Show error if no content
+        viewerError.style.display = 'block';
+      }
+    } catch (error) {
+      console.error('Error viewing document:', error);
+
+      // Hide loading and show error
+      viewerLoading.style.display = 'none';
+      viewerError.style.display = 'block';
+    }
+  }
+
+  /**
+   * Escape HTML to prevent XSS
+   * @param {string} html - HTML string to escape
+   * @returns {string} Escaped HTML
+   */
+  function escapeHtml(html) {
+    const div = document.createElement('div');
+    div.textContent = html;
+    return div.innerHTML;
   }
   
   /**
@@ -329,23 +415,23 @@ document.addEventListener('DOMContentLoaded', async () => {
    */
   async function confirmDelete() {
     if (!documentToDelete) {
-      closeModal();
+      closeDeleteModal();
       return;
     }
-    
+
     try {
       // Disable modal buttons
       confirmDeleteBtn.disabled = true;
       cancelDeleteBtn.disabled = true;
-      
+
       // Delete the document
       await documentService.deleteDocument(documentToDelete);
-      
+
       // Remove from local data
       documents = documents.filter(d => d.id !== documentToDelete);
-      
+
       // Close modal and reset
-      closeModal();
+      closeDeleteModal();
       documentToDelete = null;
       
       // Show success message
@@ -370,9 +456,18 @@ document.addEventListener('DOMContentLoaded', async () => {
   /**
    * Close delete confirmation modal
    */
-  function closeModal() {
+  function closeDeleteModal() {
     deleteModal.style.display = 'none';
     documentToDelete = null;
+  }
+
+  /**
+   * Close document viewer modal
+   */
+  function closeViewerModal() {
+    viewerModal.style.display = 'none';
+    currentViewingDocument = null;
+    viewerContent.innerHTML = '';
   }
   
   /**
