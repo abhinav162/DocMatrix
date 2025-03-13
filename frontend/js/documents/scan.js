@@ -42,18 +42,28 @@ document.addEventListener('DOMContentLoaded', async () => {
   const matchDocumentPanelTitle = document.getElementById('match-document-panel-title');
   const matchDocumentContent = document.getElementById('match-document-content');
   const backToResultsBtn = document.getElementById('back-to-results-btn');
-  
+
+  // Element references - Document Viewer Modal
+  const viewerModal = document.getElementById('document-viewer-modal');
+  const viewerTitle = document.getElementById('document-viewer-title');
+  const viewerContent = document.getElementById('document-content');
+  const viewerLoading = document.getElementById('document-loading');
+  const viewerError = document.getElementById('document-error');
+  const closeViewerBtn = document.getElementById('close-viewer-btn');
+  const closeViewerModalBtn = document.getElementById('close-viewer-modal');
+
   // Element references - Templates
   const matchCardTemplate = document.getElementById('match-card-template');
-  
+
   // Element references - Messages
   const statusMessage = document.getElementById('status-message');
-  
+
   // State
   let documents = [];
   let selectedDocumentId = null;
   let currentThreshold = 70;
   let scanResultData = null;
+  let currentViewingDocument = null;
   
   // Initialize
   init();
@@ -85,6 +95,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Show results, hide comparison
     comparisonView.style.display = 'none';
     scanResults.style.display = 'block';
+  });
+
+  // Event listeners - Document Viewer Modal
+  closeViewerBtn.addEventListener('click', closeViewerModal);
+  closeViewerModalBtn.addEventListener('click', closeViewerModal);
+
+  // Close viewer modal if clicking outside
+  window.addEventListener('click', (e) => {
+    if (e.target === viewerModal) {
+      closeViewerModal();
+    }
   });
   
   /**
@@ -364,10 +385,69 @@ document.addEventListener('DOMContentLoaded', async () => {
    * View document
    * @param {number} id - Document ID
    */
-  function viewDocument(id) {
-    // TODO: Implement document viewer
-    console.log('View document:', id);
-    alert('Document viewer not implemented yet.');
+  async function viewDocument(id) {
+    try {
+      // Store current document ID
+      currentViewingDocument = id;
+
+      // Reset modal state
+      viewerContent.innerHTML = '';
+      viewerError.style.display = 'none';
+      viewerLoading.style.display = 'flex';
+
+      // Show the modal
+      viewerModal.style.display = 'flex';
+
+      // Fetch document content
+      const documentData = await scanService.getDocumentContent(id);
+
+      // Make sure we're still viewing the same document (user might have closed modal)
+      if (currentViewingDocument !== id) {
+        return;
+      }
+
+      // Set document title
+      viewerTitle.textContent = documentData.title || 'Document';
+
+      // Hide loading indicator
+      viewerLoading.style.display = 'none';
+
+      // Display document content
+      if (documentData && documentData.content) {
+        // Escape HTML to prevent XSS
+        const safeContent = escapeHtml(documentData.content);
+        viewerContent.innerHTML = safeContent;
+      } else {
+        // Show error if no content
+        viewerError.style.display = 'block';
+      }
+    } catch (error) {
+      console.error('Error viewing document:', error);
+
+      // Hide loading and show error
+      viewerLoading.style.display = 'none';
+      viewerError.style.display = 'block';
+    }
+  }
+
+  /**
+   * Close document viewer modal
+   */
+  function closeViewerModal() {
+    viewerModal.style.display = 'none';
+    currentViewingDocument = null;
+    viewerContent.innerHTML = '';
+  }
+
+  /**
+   * Escape HTML to prevent XSS
+   * @param {string} html - HTML string to escape
+   * @returns {string} Escaped HTML
+   */
+  function escapeHtml(html) {
+    const div = document.createElement('div');
+    div.textContent = html;
+    return div.innerHTML;
   }
   
 /**

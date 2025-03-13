@@ -183,6 +183,29 @@
     </div>
   </template>
 
+  <!-- Document Viewer Modal -->
+  <div id="document-viewer-modal" class="modal">
+    <div class="modal-content document-viewer-content">
+      <div class="modal-header">
+        <h2 id="document-viewer-title">Document Title</h2>
+        <button class="close-modal" id="close-viewer-modal">&times;</button>
+      </div>
+      <div class="modal-body document-viewer-body">
+        <div id="document-loading" class="loading-indicator">
+          <div class="spinner"></div>
+          <p>Loading document...</p>
+        </div>
+        <div id="document-content" class="document-content"></div>
+        <div id="document-error" class="document-error" style="display: none;">
+          <p>Failed to load document content. Please try again.</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="close-viewer-btn" class="btn secondary">Close</button>
+      </div>
+    </div>
+  </div>
+
   <script src="../js/components/navigation.js" type="module"></script>
   <script src="../js/documents/scan.js" type="module"></script>
 </body>
