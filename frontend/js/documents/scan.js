@@ -1,6 +1,7 @@
 import { checkAuth } from '../utils/authCheck.js';
 import { documentService } from './documentService.js';
 import { scanService } from './scanService.js';
+import { initDocumentViewer } from '../components/documentViewer.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   // Check if user is authenticated
@@ -52,6 +53,18 @@ document.addEventListener('DOMContentLoaded', async () => {
   const closeViewerBtn = document.getElementById('close-viewer-btn');
   const closeViewerModalBtn = document.getElementById('close-viewer-modal');
 
+  // Initialize document viewer
+  const documentViewer = initDocumentViewer({
+    modalElement: viewerModal,
+    titleElement: viewerTitle,
+    contentElement: viewerContent,
+    loadingElement: viewerLoading,
+    errorElement: viewerError,
+    closeButtonElement: closeViewerBtn,
+    closeXButtonElement: closeViewerModalBtn,
+    fetchDocumentFunction: scanService.getDocumentContent
+  });
+
   // Element references - Templates
   const matchCardTemplate = document.getElementById('match-card-template');
 
@@ -63,7 +76,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   let selectedDocumentId = null;
   let currentThreshold = 70;
   let scanResultData = null;
-  let currentViewingDocument = null;
   
   // Initialize
   init();
@@ -97,16 +109,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     scanResults.style.display = 'block';
   });
 
-  // Event listeners - Document Viewer Modal
-  closeViewerBtn.addEventListener('click', closeViewerModal);
-  closeViewerModalBtn.addEventListener('click', closeViewerModal);
-
-  // Close viewer modal if clicking outside
-  window.addEventListener('click', (e) => {
-    if (e.target === viewerModal) {
-      closeViewerModal();
-    }
-  });
+  // Document viewer modal event listeners are now handled by the documentViewer component
   
   /**
    * Initialize the page
@@ -385,69 +388,8 @@ document.addEventListener('DOMContentLoaded', async () => {
    * View document
    * @param {number} id - Document ID
    */
-  async function viewDocument(id) {
-    try {
-      // Store current document ID
-      currentViewingDocument = id;
-
-      // Reset modal state
-      viewerContent.innerHTML = '';
-      viewerError.style.display = 'none';
-      viewerLoading.style.display = 'flex';
-
-      // Show the modal
-      viewerModal.style.display = 'flex';
-
-      // Fetch document content
-      const documentData = await scanService.getDocumentContent(id);
-
-      // Make sure we're still viewing the same document (user might have closed modal)
-      if (currentViewingDocument !== id) {
-        return;
-      }
-
-      // Set document title
-      viewerTitle.textContent = documentData.title || 'Document';
-
-      // Hide loading indicator
-      viewerLoading.style.display = 'none';
-
-      // Display document content
-      if (documentData && documentData.content) {
-        // Escape HTML to prevent XSS
-        const safeContent = escapeHtml(documentData.content);
-        viewerContent.innerHTML = safeContent;
-      } else {
-        // Show error if no content
-        viewerError.style.display = 'block';
-      }
-    } catch (error) {
-      console.error('Error viewing document:', error);
-
-      // Hide loading and show error
-      viewerLoading.style.display = 'none';
-      viewerError.style.display = 'block';
-    }
-  }
-
-  /**
-   * Close document viewer modal
-   */
-  function closeViewerModal() {
-    viewerModal.style.display = 'none';
-    currentViewingDocument = null;
-    viewerContent.innerHTML = '';
-  }
-
-  /**
-   * Escape HTML to prevent XSS
-   * @param {string} html - HTML string to escape
-   * @returns {string} Escaped HTML
-   */
-  function escapeHtml(html) {
-    const div = document.createElement('div');
-    div.textContent = html;
-    return div.innerHTML;
+  function viewDocument(id) {
+    documentViewer.viewDocument(id);
   }
   
 /**

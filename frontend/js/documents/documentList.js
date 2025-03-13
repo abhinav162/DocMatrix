@@ -1,6 +1,7 @@
 import { apiService } from '../utils/api.js';
 import { checkAuth } from '../utils/authCheck.js';
 import { documentService } from './documentService.js';
+import { initDocumentViewer } from '../components/documentViewer.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   // Check if user is authenticated
@@ -33,6 +34,18 @@ document.addEventListener('DOMContentLoaded', async () => {
   const closeViewerBtn = document.getElementById('close-viewer-btn');
   const closeViewerModalBtn = document.getElementById('close-viewer-modal');
 
+  // Initialize document viewer
+  const documentViewer = initDocumentViewer({
+    modalElement: viewerModal,
+    titleElement: viewerTitle,
+    contentElement: viewerContent,
+    loadingElement: viewerLoading,
+    errorElement: viewerError,
+    closeButtonElement: closeViewerBtn,
+    closeXButtonElement: closeViewerModalBtn,
+    fetchDocumentFunction: documentService.getDocumentDetails
+  });
+
   // Get all close modal buttons
   const closeModalBtns = document.querySelectorAll('.close-modal');
 
@@ -45,7 +58,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     sort: 'newest'
   };
   let documentToDelete = null;
-  let currentViewingDocument = null;
   
   // Initialize
   loadDocuments();
@@ -65,10 +77,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   confirmDeleteBtn.addEventListener('click', confirmDelete);
   cancelDeleteBtn.addEventListener('click', closeDeleteModal);
 
-  // Document viewer modal event listeners
-  closeViewerBtn.addEventListener('click', closeViewerModal);
-  closeViewerModalBtn.addEventListener('click', closeViewerModal);
-
   // Add event listeners to all close modal buttons
   closeModalBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -80,13 +88,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
-  // Close modals if clicking outside
+  // Close delete modal if clicking outside
   window.addEventListener('click', (e) => {
     if (e.target === deleteModal) {
       closeDeleteModal();
-    }
-    if (e.target === viewerModal) {
-      closeViewerModal();
     }
   });
   
@@ -278,65 +283,8 @@ document.addEventListener('DOMContentLoaded', async () => {
    * View document details
    * @param {number} id - Document ID
    */
-  async function viewDocument(id) {
-    try {
-      // Store current document ID
-      currentViewingDocument = id;
-
-      // Reset modal state
-      viewerContent.innerHTML = '';
-      viewerError.style.display = 'none';
-      viewerLoading.style.display = 'flex';
-
-      // Find document in our local data to get the title
-      const document = documents.find(doc => doc.id === id);
-      if (document) {
-        viewerTitle.textContent = document.title;
-      } else {
-        viewerTitle.textContent = 'Document';
-      }
-
-      // Show the modal
-      viewerModal.style.display = 'flex';
-
-      // Fetch document content
-      const documentData = await documentService.getDocumentDetails(id);
-
-      // Make sure we're still viewing the same document (user might have closed modal)
-      if (currentViewingDocument !== id) {
-        return;
-      }
-
-      // Hide loading indicator
-      viewerLoading.style.display = 'none';
-
-      // Display document content
-      if (documentData && documentData.content) {
-        // Escape HTML to prevent XSS
-        const safeContent = escapeHtml(documentData.content);
-        viewerContent.innerHTML = safeContent;
-      } else {
-        // Show error if no content
-        viewerError.style.display = 'block';
-      }
-    } catch (error) {
-      console.error('Error viewing document:', error);
-
-      // Hide loading and show error
-      viewerLoading.style.display = 'none';
-      viewerError.style.display = 'block';
-    }
-  }
-
-  /**
-   * Escape HTML to prevent XSS
-   * @param {string} html - HTML string to escape
-   * @returns {string} Escaped HTML
-   */
-  function escapeHtml(html) {
-    const div = document.createElement('div');
-    div.textContent = html;
-    return div.innerHTML;
+  function viewDocument(id) {
+    documentViewer.viewDocument(id);
   }
   
   /**
@@ -461,14 +409,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     documentToDelete = null;
   }
 
-  /**
-   * Close document viewer modal
-   */
-  function closeViewerModal() {
-    viewerModal.style.display = 'none';
-    currentViewingDocument = null;
-    viewerContent.innerHTML = '';
-  }
+  // Document viewer modal is now handled by the documentViewer component
   
   /**
    * Show or hide loading indicator
