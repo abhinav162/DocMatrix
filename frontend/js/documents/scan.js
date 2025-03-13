@@ -223,7 +223,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       scanProgress.style.display = 'block';
       
       // Update status message
-      scanStatusMessage.textContent = 'Scanning for similar documents...';
+      scanStatusMessage.textContent = 'This might take a moment.';
       
       // Start scan
       scanResultData = await scanService.scanDocument(selectedDocumentId, currentThreshold);
@@ -305,8 +305,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Set title
     card.querySelector('.match-title').textContent = match.title;
     
-    // Set score
-    card.querySelector('.match-score').textContent = `${Math.round(match.similarityScore)}%`;
+    // Set score with color based on similarity
+    const scoreElement = card.querySelector('.match-score');
+    const roundedScore = Math.round(match.similarityScore);
+    scoreElement.textContent = `${roundedScore}%`;
+
+    // Add color class based on score
+    if (roundedScore >= 90) {
+      scoreElement.classList.add('high-match');
+    } else if (roundedScore >= 75) {
+      scoreElement.classList.add('medium-match');
+    } else {
+      scoreElement.classList.add('low-match');
+    }
     
     // Set owner
     const ownerSpan = card.querySelector('.owner');
@@ -325,10 +336,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       dateSpan.style.display = 'none';
     }
     
-    // Set content preview if available
+    // Set content preview
     const contentDiv = card.querySelector('.match-content');
-    if (match.contentPreview) {
-      contentDiv.textContent = match.contentPreview;
+    if (match.content) {
+      contentDiv.textContent = generateContentPreview(match.content, 150);
     } else {
       contentDiv.textContent = 'Content preview not available.';
     }
@@ -390,6 +401,27 @@ document.addEventListener('DOMContentLoaded', async () => {
    */
   function viewDocument(id) {
     documentViewer.viewDocument(id);
+  }
+
+  /**
+   * Generate a content preview from the full document content
+   * @param {string} content - Full document content
+   * @param {number} maxLength - Maximum length of the preview
+   * @returns {string} Content preview
+   */
+  function generateContentPreview(content, maxLength = 150) {
+    if (!content) return 'No content available';
+
+    // Remove extra whitespace and normalize line breaks
+    const normalizedContent = content.replace(/\s+/g, ' ').trim();
+
+    // If content is shorter than maxLength, return it as is
+    if (normalizedContent.length <= maxLength) {
+      return normalizedContent;
+    }
+
+    // Otherwise, truncate and add ellipsis
+    return normalizedContent.substring(0, maxLength) + '...';
   }
   
 /**

@@ -145,11 +145,14 @@
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
   padding: 1.5rem;
-  transition: box-shadow 0.3s;
+  transition: all 0.3s ease;
+  background-color: white;
 }
 
 .match-card:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+  border-color: var(--primary-color);
 }
 
 .match-header {
@@ -165,9 +168,28 @@
 }
 
 .match-score {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: var(--primary-color);
+  font-size: 1rem;
+  font-weight: 500;
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 20px;
+  display: inline-block;
+  min-width: 70px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.match-score.high-match {
+  background-color: #28a745; /* Green for high matches */
+}
+
+.match-score.medium-match {
+  background-color: var(--primary-color); /* Blue for medium matches */
+}
+
+.match-score.low-match {
+  background-color: #ffc107; /* Yellow for low matches */
+  color: #333; /* Darker text for better contrast on yellow */
 }
 
 .match-meta {
@@ -182,13 +204,18 @@
 
 .match-content {
   background-color: var(--background-color);
-  padding: 1rem;
+  padding: 0.5rem;
   border-radius: var(--border-radius);
   font-size: 0.9rem;
-  max-height: 150px;
-  overflow-y: auto;
+  max-height: 100px;
+  min-height: 100px;
+  overflow-y: hidden;
   white-space: pre-wrap;
   margin-bottom: 1rem;
+  line-height: 1.4;
+  color: var(--text-color);
+  font-family: 'Courier New', monospace;
+  border: 1px solid var(--border-color);
 }
 
 .match-actions {
