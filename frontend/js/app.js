@@ -129,8 +129,8 @@ class App {
    */
   initHomePage() {
     const getStartedBtn = document.getElementById('get-started-btn');
-    const learnMoreBtn = document.getElementById('learn-more-btn');
-    
+    const learnMoreBtn = document.querySelector('.hero-btn.secondary');
+
     if (getStartedBtn) {
       getStartedBtn.addEventListener('click', () => {
         if (authService.isAuthenticated) {
@@ -140,14 +140,42 @@ class App {
         }
       });
     }
-    
+
     if (learnMoreBtn) {
-      learnMoreBtn.addEventListener('click', () => {
-        const featuresSection = document.getElementById('features-section');
+      learnMoreBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const featuresSection = document.getElementById('features');
         if (featuresSection) {
           featuresSection.scrollIntoView({ behavior: 'smooth' });
         }
       });
+    }
+
+    // Initialize the document animation
+    this.initDocumentAnimation();
+  }
+
+  /**
+   * Initialize document animation
+   * This is a fallback in case the landing.js script doesn't load
+   */
+  initDocumentAnimation() {
+    // Check if the animation has already been initialized by landing.js
+    if (window.documentAnimationInitialized) return;
+
+    // Check if the landing.js script is loaded
+    const landingScript = document.querySelector('script[src="js/landing.js"]');
+    if (!landingScript) {
+      console.warn('Landing script not found, initializing animation from app.js');
+
+      // If landing.js is not available, try to initialize a basic animation
+      const animationContainer = document.querySelector('.document-animation');
+      if (animationContainer) {
+        // Create a simple scan line
+        const scanLine = document.createElement('div');
+        scanLine.className = 'scan-line';
+        animationContainer.appendChild(scanLine);
+      }
     }
   }
 

@@ -4,10 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>DocMatrix</title>
+  <title>DocMatrix - AI-Powered Document Scanning & Matching</title>
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/integration.css">
+  <link rel="stylesheet" href="css/landing.css">
   <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
   <header>
@@ -17,33 +19,58 @@
   </header>
 
   <main>
-    <section id="welcome-section" class="container">
-      <h1>Document Scanning and Matching System</h1>
-      <p>Upload text files and find matching documents with AI-powered similarity detection.</p>
-      <div class="action-buttons">
-        <button id="get-started-btn" class="btn primary">Get Started</button>
-        <!-- <button id="learn-more-btn" class="btn secondary">Learn More</button> -->
+    <!-- Hero Section with Animation -->
+    <section class="hero-section">
+      <div class="document-animation">
+        <!-- Floating documents and scan effects will be added by JS -->
+      </div>
+
+      <div class="hero-content">
+        <h1 class="hero-title">Intelligent Document Matching</h1>
+        <p class="hero-subtitle">Upload text files and discover similar documents with our AI-powered similarity detection system. Secure, fast, and accurate.</p>
+        <div class="hero-buttons">
+          <button id="get-started-btn" class="hero-btn primary">Get Started</button>
+          <a href="#features" class="hero-btn secondary">Learn More</a>
+        </div>
       </div>
     </section>
 
-    <section id="features-section" class="container">
-      <h2>Features</h2>
-      <div class="features-grid">
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+      <h2 class="section-title">Powerful Features</h2>
+      <p class="section-subtitle">Discover what makes DocMatrix the leading solution for document similarity detection</p>
+
+      <div class="features-container">
         <div class="feature-card">
-          <h3>AI-Powered Matching</h3>
-          <p>Advanced document similarity detection using Google Gemini.</p>
+          <div class="feature-icon">
+            <i class="fas fa-brain"></i>
+          </div>
+          <h3 class="feature-title">AI-Powered Matching</h3>
+          <p class="feature-description">Advanced document similarity detection using Google Gemini technology for accurate and intelligent matching.</p>
         </div>
+
         <div class="feature-card">
-          <h3>Credit System</h3>
-          <p>20 free scans daily with options to request more.</p>
+          <div class="feature-icon">
+            <i class="fas fa-coins"></i>
+          </div>
+          <h3 class="feature-title">Credit System</h3>
+          <p class="feature-description">20 free scans daily with flexible options to request more credits when you need them.</p>
         </div>
+
         <div class="feature-card">
-          <h3>Secure Storage</h3>
-          <p>Documents are securely stored with privacy controls.</p>
+          <div class="feature-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h3 class="feature-title">Secure Storage</h3>
+          <p class="feature-description">Documents are securely stored with robust privacy controls to protect your sensitive information.</p>
         </div>
+
         <div class="feature-card">
-          <h3>Smart Analytics</h3>
-          <p>Detailed insights for administrators.</p>
+          <div class="feature-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3 class="feature-title">Smart Analytics</h3>
+          <p class="feature-description">Detailed insights and reporting tools for administrators to monitor system usage and performance.</p>
         </div>
       </div>
     </section>
@@ -57,5 +84,6 @@
 
   <script src="js/components/navigation.js" type="module"></script>
   <script src="js/app.js" type="module"></script>
+  <script src="js/landing.js"></script>
 </body>
 </html>
