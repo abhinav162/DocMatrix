@@ -120,14 +120,48 @@ export class DocumentService {
   ): Promise<boolean> {
     try {
       const document = await DocumentDAO.findById(documentId);
-      
+
       if (!document) {
         return false;
       }
-      
+
       return document.user_id === userId || !document.is_private;
     } catch (error) {
       console.error('Error checking document access:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Delete a document
+   * @param documentId Document ID
+   * @returns True if deleted successfully, false otherwise
+   */
+  public static async deleteDocument(documentId: number): Promise<boolean> {
+    try {
+      // Get the document to get the file path
+      const document = await DocumentDAO.findById(documentId);
+
+      if (!document) {
+        return false;
+      }
+
+      // Delete the document from the database
+      const deleted = await DocumentDAO.delete(documentId);
+
+      if (deleted && document.file_path) {
+        // Delete the file from storage
+        try {
+          await FileStorageUtil.deleteFile(document.file_path);
+        } catch (fileError) {
+          console.error('Error deleting document file:', fileError);
+          // Continue even if file deletion fails
+        }
+      }
+
+      return deleted;
+    } catch (error) {
+      console.error('Error deleting document:', error);
       throw error;
     }
   }

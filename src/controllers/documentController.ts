@@ -7,6 +7,67 @@ import { FileStorageUtil } from '../utils/fileStorage';
  */
 export class DocumentController {
   /**
+   * Delete a document
+   * @param req Request
+   * @param res Response
+   */
+  public static async deleteDocument(req: Request, res: Response): Promise<void> {
+    try {
+      // Ensure user is authenticated
+      if (!req.user || !req.user.id) {
+        res.status(401).json({
+          message: 'Authentication required'
+        });
+        return;
+      }
+
+      const documentId = parseInt(req.params.id);
+
+      if (isNaN(documentId)) {
+        res.status(400).json({
+          message: 'Invalid document ID'
+        });
+        return;
+      }
+
+      // Get the document to check ownership
+      const document = await DocumentService.getDocumentById(documentId);
+
+      if (!document) {
+        res.status(404).json({
+          message: 'Document not found'
+        });
+        return;
+      }
+
+      // Check if the user owns the document
+      if (document.user_id !== req.user.id) {
+        res.status(403).json({
+          message: 'Access denied - you can only delete your own documents'
+        });
+        return;
+      }
+
+      // Delete the document
+      const success = await DocumentService.deleteDocument(documentId);
+
+      if (success) {
+        res.status(200).json({
+          message: 'Document deleted successfully'
+        });
+      } else {
+        res.status(500).json({
+          message: 'Failed to delete document'
+        });
+      }
+    } catch (error) {
+      console.error('Error in deleteDocument:', error);
+      res.status(500).json({
+        message: 'An error occurred while deleting the document'
+      });
+    }
+  }
+  /**
    * Upload a new document
    * @param req Request
    * @param res Response

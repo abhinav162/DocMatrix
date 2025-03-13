@@ -58,4 +58,15 @@ router.patch(
   DocumentController.togglePrivacy
 );
 
+/**
+ * @route DELETE /documents/:id
+ * @description Delete a document
+ * @access Private
+ */
+router.delete(
+  '/:id',
+  AuthMiddleware.isAuthenticated,
+  DocumentController.deleteDocument
+);
+
 export default router;

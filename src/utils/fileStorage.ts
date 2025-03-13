@@ -9,6 +9,7 @@ const writeFile = promisify(fs.writeFile);
 const readFile = promisify(fs.readFile);
 const stat = promisify(fs.stat);
 const readdir = promisify(fs.readdir);
+const unlink = promisify(fs.unlink);
 
 /**
  * Utility for file storage operations
@@ -179,31 +180,53 @@ export class FileStorageUtil {
   public static async getUserFiles(userId: number): Promise<{ fileName: string; filePath: string; sizeInBytes: number }[]> {
     try {
       const userDir = this.getUserDirectoryPath(userId);
-      
+
       // Check if directory exists
       if (!fs.existsSync(userDir)) {
         return [];
       }
-      
+
       // Get all files in the directory
       const files = await readdir(userDir);
-      
+
       // Get file stats for each file
       const fileInfoPromises = files.map(async (fileName) => {
         const filePath = path.join(userDir, fileName);
         const fileStats = await stat(filePath);
-        
+
         return {
           fileName,
           filePath,
           sizeInBytes: fileStats.size,
         };
       });
-      
+
       return await Promise.all(fileInfoPromises);
     } catch (error) {
       console.error(`Error getting files for user ${userId}:`, error);
       throw new Error('Failed to get user files');
+    }
+  }
+
+  /**
+   * Delete a file
+   * @param filePath Path to the file to delete
+   * @returns True if deleted successfully
+   */
+  public static async deleteFile(filePath: string): Promise<boolean> {
+    try {
+      // Check if file exists
+      if (!fs.existsSync(filePath)) {
+        console.warn(`File not found for deletion: ${filePath}`);
+        return false;
+      }
+
+      // Delete the file
+      await unlink(filePath);
+      return true;
+    } catch (error) {
+      console.error(`Error deleting file ${filePath}:`, error);
+      throw new Error('Failed to delete file');
     }
   }
 }
