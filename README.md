@@ -13,6 +13,7 @@ A self-contained document scanning and matching system. It allows users to uploa
 - Smart analytics dashboard for admins
 - User activity summary (No of scans, documents uploaded)
 - Document management (upload, view, delete)
+- Document privacy (Public or Private)
 - Multi-user support
 - Export scan results
 
