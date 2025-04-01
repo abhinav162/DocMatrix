@@ -4,12 +4,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize document animations
   initDocumentAnimation();
-
   // Set a flag to indicate the animation has been initialized
   window.documentAnimationInitialized = true;
-
-  // Note: We don't need to handle the get started button click here
-  // as it's already handled in app.js
 });
 
 /**

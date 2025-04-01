@@ -6,7 +6,7 @@ module.exports = {
       args: "run start",
       watch: false,
       env: {
-        PORT: 4000,
+        PORT: 4001,
       },
     },
     {
