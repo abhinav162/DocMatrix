@@ -2,7 +2,7 @@
 
 A self-contained document scanning and matching system. It allows users to upload `.txt` files, scan them against a database of `.txt` documents, and retrieve matches based on semantic similarity.
 
-### Live Demo: https://docmatrix.zapto.org/
+### Live Demo: https://docmatrix.gftrilo.store/
 
 ## Features
 
