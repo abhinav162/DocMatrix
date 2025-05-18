@@ -38,7 +38,16 @@ app.use(session({
 }));
 
 // Security middleware
-app.use(helmet());
+app.use(helmet(
+  {
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        frameAncestors: ["*"],
+      },
+    },
+  }
+));
 
 // Request logging
 app.use(morgan('dev'));
