@@ -1,1 +1,6 @@
-.dockerignore
+node_modules
+dist
+.vscode
+.git
+.env
+data/
