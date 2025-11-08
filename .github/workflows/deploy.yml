@@ -1,4 +1,4 @@
-name: Auto-Deploy to GCP VM
+name: Auto Deploy via Docker
 
 on:
   push:
@@ -6,31 +6,48 @@ on:
       - main
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup SSH
-      run: |
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
-        chmod 600 private_key.pem
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.GHCR_USERNAME }}
+          password: ${{ secrets.GHCR_TOKEN }}
 
-    - name: Deploy to GCP VM
-      env:
-        GCP_USER: ${{ secrets.GCP_USER }}
-        GCP_VM_IP: ${{ secrets.GCP_VM_IP }}
-      run: |
-        ssh -o StrictHostKeyChecking=no -i private_key.pem ${GCP_USER}@${GCP_VM_IP} << 'EOF'
-        export NVM_DIR="$HOME/.nvm"
-        source $NVM_DIR/nvm.sh
-        nvm use 22
-        cd DocMatrix
-        git checkout main
-        git pull origin main
-        npm install
-        npm run build
-        pm2 restart docmatrix
-        EOF
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${{ secrets.GHCR_USERNAME }}/docmatrix:latest
+
+      - name: Setup SSH key
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
+          chmod 600 private_key.pem
+
+      - name: Deploy on Oracle VM
+        env:
+          VM_USER: ${{ secrets.VM_USER }}
+          VM_IP: ${{ secrets.VM_IP }}
+          GHCR_USERNAME: ${{ secrets.GHCR_USERNAME }}
+          GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
+        run: |
+          ssh -o StrictHostKeyChecking=no -i private_key.pem ${VM_USER}@${VM_IP} << 'EOF'
+          echo "🛠️ Pulling latest DocMatrix image..."
+          docker login ghcr.io -u $GHCR_USERNAME -p $GHCR_TOKEN
+          docker pull ghcr.io/$GHCR_USERNAME/docmatrix:latest
+
+          echo "🔁 Restarting container..."
+          cd ~/docmatrix
+          docker compose down
+          docker compose up -d
+
+          echo "✅ Deployment complete!"
+          EOF
