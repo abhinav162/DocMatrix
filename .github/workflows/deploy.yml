@@ -39,7 +39,7 @@ jobs:
           GHCR_USERNAME: ${{ secrets.GHCR_USERNAME }}
           GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
         run: |
-          ssh -o StrictHostKeyChecking=no -i private_key.pem ${VM_USER}@${VM_IP} << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i private_key.pem ${VM_USER}@${VM_IP} << EOF
           echo "🛠️ Pulling latest DocMatrix image..."
           docker login ghcr.io -u $GHCR_USERNAME -p $GHCR_TOKEN
           docker pull ghcr.io/$GHCR_USERNAME/docmatrix:latest
