@@ -56,5 +56,7 @@ jobs:
           docker compose down
           docker compose up -d
 
-          echo "✅ Deployment complete!"
+          echo "🩺 Checking service health..."
+          sleep 10  # give container a few seconds to start
+          curl -f http://localhost:4001/api/health || (echo "❌ Health check failed!" && exit 1)
           EOF
