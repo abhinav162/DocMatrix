@@ -25,6 +25,7 @@ jobs:
         with:
           context: .
           push: true
+          platforms: linux/arm64
           tags: ghcr.io/${{ secrets.GHCR_USERNAME }}/docmatrix:latest
 
       - name: Setup SSH key
