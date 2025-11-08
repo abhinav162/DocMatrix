@@ -9,7 +9,7 @@ export async function initDatabase() {
     const dbType = process.env.DB_TYPE;
     if (dbType !== 'LOCAL') {
       console.error('DB_TYPE is not set to LOCAL, Using CLOUD DB');
-      process.exit(1);
+      // process.exit(1);
     }
 
     console.log('Initializing database schema...');
