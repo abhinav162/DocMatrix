@@ -5,5 +5,4 @@ dist/
 .DS_Store
 *.sqlite
 /documents
-package-lock.json
 /src/exports
