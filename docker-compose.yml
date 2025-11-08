@@ -14,5 +14,15 @@ services:
       # - ./frontend:/app/frontend   # optional: live frontend edits during dev
     restart: unless-stopped
 
+  cron:
+    image: ghcr.io/abhinav162/docmatrix:latest
+    container_name: docmatrix-cron
+    command: npm run cron         
+    env_file:
+      - .env
+    volumes:
+      - docmatrix_data:/app/data  
+    restart: unless-stopped
+
 volumes:
   docmatrix_data:
