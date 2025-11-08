@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   docmatrix:
-    image: docmatrix:1.0        # built locally, or replace with your registry path later
+    image: ghcr.io/abhinav162/docmatrix:latest       # built locally, or replace with your registry path later
     container_name: docmatrix
     build: .
     ports:
@@ -11,7 +11,7 @@ services:
       - .env
     volumes:
       - docmatrix_data:/app/data   # persistent database storage
-      - ./frontend:/app/frontend   # optional: live frontend edits during dev
+      # - ./frontend:/app/frontend   # optional: live frontend edits during dev
     restart: unless-stopped
 
 volumes:
